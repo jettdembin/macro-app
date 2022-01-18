@@ -5,11 +5,33 @@
 }
 
 html, body {
-  width: 100%;
   height: 100%;
   font-size: 62.5%;
   font-family: 'Poppins', sans-serif;
   color: rgb(255, 255, 255);
+}
+
+h1 {
+  font-size: 2.6rem;
+  font-weight: normal;
+}
+h2 {
+  font-size: 2.2rem;
+  font-weight: normal;
+}
+h3 {
+  font-size: 2rem;
+  font-weight: normal;
+}
+h4 {
+  font-size: 1.8rem;
+  font-weight: normal;
+}
+h1 {
+  font-size: 2.6rem;
+}
+h1 {
+  font-size: 2.6rem;
 }
 
 .container {
@@ -29,15 +51,22 @@ html, body {
   z-index: -1;
 }
 
+a {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+
+/* Start Nav */
 nav {
+  min-height: 10vh;
   display: flex;
   padding: 2rem;
   font-size: 1.6rem;
 }
 
-.logo {
+/* .logo {
   font-size: 2rem;
-}
+} */
 
 ul {
   display: flex;
@@ -51,4 +80,50 @@ ul>li:first-child {
 .nav-right {
   margin-left: auto;
 }
+/* End Nav */
+
+/* Start Main */
+main {
+  border: 1px solid red;
+  margin: 5vh 2rem;
+  min-height: 80vh;
+}
+
+.weight-input-cntr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weight-input {
+  border: 1px solid red;
+  margin: 4rem 0 2rem 0;
+  display: flex;
+}
+
+.weight-input input {
+  margin-left: 2rem;
+}
+
+.goal-header-cntr {
+  margin: 2rem;
+  text-align: center;
+}
+
+.goal-cntr {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 2rem;
+  border: 1px solid red;
+}
+
+.goal {
+  text-align: center;
+  border: 1px solid green;
+}
+
+
+
+
+/* End Main */
 
