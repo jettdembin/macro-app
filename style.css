@@ -27,12 +27,6 @@ h4 {
   font-size: 1.8rem;
   font-weight: normal;
 }
-h1 {
-  font-size: 2.6rem;
-}
-h1 {
-  font-size: 2.6rem;
-}
 
 .container {
   position: relative;
@@ -122,8 +116,53 @@ main {
   border: 1px solid green;
 }
 
+/* Start Calculation Section */
+.calculation-cntr {
+  color: black;
+  background: rgb(255, 255, 255);
+  margin: auto 2rem;
+  border: 1px solid red;
+}
 
+.calories-header {
+  text-align: center;
+  margin: 2rem;
+}
 
+.calories-amnt-cntr {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.calculation-table-cntr {
+  display: flex;
+  margin: 0 2rem 2rem 2rem;
+  border: 1px solid black;
+}
+
+.calculation-title-cntr {
+  margin-right: 2rem;
+}
+
+.calculation-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid red;
+}
+
+.calculation-grams {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.calculation-percentage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+/* End Calculation Section */
 
 /* End Main */
 
