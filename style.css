@@ -28,7 +28,14 @@ h4 {
   font-weight: normal;
 }
 
+button {
+  font-family: 'Poppins', sans-serif;
+  padding: .5rem 2rem;
+  cursor: pointer;
+}
+
 .container {
+  height: 100%; 
   position: relative;
 }
 
@@ -51,7 +58,7 @@ a {
 }
 
 /* Start Nav */
-nav {
+.nav {
   min-height: 10vh;
   display: flex;
   padding: 2rem;
@@ -67,8 +74,8 @@ ul {
   list-style-type: none;
 }
 
-ul>li:first-child {
-  margin-right: 2rem;
+.nav-item {
+  margin-left: 2rem;
 }
 
 .nav-right {
@@ -120,7 +127,7 @@ main {
 .calculation-cntr {
   color: black;
   background: rgb(255, 255, 255);
-  margin: auto 2rem;
+  margin: 4rem 2rem;
   border: 1px solid red;
 }
 
@@ -141,6 +148,10 @@ main {
 }
 
 .calculation-title-cntr {
+  min-height: 20rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   margin-right: 2rem;
 }
 
@@ -161,6 +172,27 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.adjust-cntr {
+  display: grid;
+  place-items: center;
+  border: 1px solid red;
+}
+
+.adjust-header {
+  text-align: center;
+}
+
+.adjust-nav {
+  margin: 2rem;
+}
+
+.adjust-nav > li{
+  font-size: 1.2rem;
+  padding: .5rem 2rem;
+  border: 1px solid blue;
+  border-radius: .2rem;
 }
 /* End Calculation Section */
 
