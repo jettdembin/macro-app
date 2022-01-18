@@ -21,19 +21,19 @@
       <div class="nav-right">
         <ul>
           <li class="nav-item"><a href="#">Home</a></li>
-          <li class="nav-item"><a href="#">Add Foods</a></li>
+          <li class="nav-item"><a href="#">Log Items</a></li>
         </ul>
       </div>
     </nav>
     <!-- End Nav -->
 
     <!-- Start Main Section -->
-    <main>
+    <main id="home">
       <!-- Start Calculation Section -->
       <div class="weight-input-cntr">
         <div class="weight-input">
           <h1>Weight:</h1>
-          <input></input>
+          <input type="text" placeholder="Pounds"/>
         </div>
       </div>
       <div class="goal-header-cntr">
@@ -115,6 +115,104 @@
         </div>
       </section>
       <!-- End Calculation Info Section -->
+    </main>
+    <!-- End Main Section -->
+
+    <main id="food">
+      <!-- Start Calculation Section -->
+      <div class="weight-input-cntr">
+        <div class="weight-input">
+          <h1>Current Goal: <span></span></h1>
+        </div>
+      </div>
+      <div class="goal-header-cntr">
+        <h2>Maintain</h2>
+      </div>
+      <section class="goal-cntr">
+        <div class="goal-wrapper">
+          <div class="goal">
+            <h4>Carbs(C)</h4>
+            <h4><span></span>g</h4>
+          </div>
+        </div>
+        <div class="goal-wrapper">
+          <div class="goal">
+            <h4>Protein(P)</h4>
+            <h4><span></span>g</h4>
+          </div>
+        </div>
+        <div class="goal-wrapper">
+          <div class="goal">
+            <h4>Fat(F)</h4>
+            <h4><span></span>g</h4>
+          </div>
+        </div>
+      </section>
+      <!-- End Calculation Section -->
+
+      <!-- Start Add Item Food Section -->
+      <section class="food-cntr">
+        <div class="food-header">
+          <div class="add-food-cntr">
+            <h2>Add Food</h2>
+          </div>
+          <h2>Input Macros</h2>
+        </div>
+        <form class="food-input-cntr">
+          <div class="food-input">
+            <input type="text"/>
+          </div>
+          <div class="macros-cntr">
+            <div class="macro-input">
+              <input type="text" placeholder="C"/>
+              <h4>g</h4>
+            </div>
+            <div class="macro-input">
+              <input type="text" placeholder="P"/>
+              <h4>g</h4>
+            </div>
+            <div class="macro-input">
+              <input type="text" placeholder="F"/>
+              <h4>g</h4>
+            </div>
+          </div>
+        </form>
+        <div class="food-items-cntr">
+          <header>
+            <div class="food-item-macro-header">
+              <h6>(C)</h6>
+            </div>
+            <div class="food-item-macro-header">
+              <h6>(P)</h6>
+            </div>
+            <div class="food-item-macro-header">
+              <h6>(F)</h6>
+            </div>
+          </header>
+          <ul class="food-list">
+            <li>
+              <div class="food">
+                <p>chicken</p>
+              </div>
+              <div class="item-macro-cntr">
+                <div class="macro">
+                  10g
+                </div>
+                <div class="macro">
+                  10g
+                </div>
+                <div class="macro">
+                  10g
+                </div>
+              </div>
+              <button class="item-button" type="submit">
+                <i class="fas fa-plus-square"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <!-- End Add Item Food Section -->
     </main>
     <!-- End Main Section -->
 

@@ -28,6 +28,12 @@ h4 {
   font-weight: normal;
 }
 
+h6 {
+  font-size: 1.4rem;
+  font-weight: normal;
+}
+
+
 button {
   font-family: 'Poppins', sans-serif;
   padding: .5rem 2rem;
@@ -40,7 +46,7 @@ button {
 }
 
 .container::before {
-  height: 100vh;
+  height: 200vh;
   position: absolute;
   top: 0;
   left: 0;
@@ -195,6 +201,114 @@ main {
   border-radius: .2rem;
 }
 /* End Calculation Section */
+
+
+/* Start Food Item Section */
+.food-cntr {
+  min-height: 45vh;
+  color: black;
+  background: rgb(255, 255, 255);
+  margin: 4rem 2rem;
+  border: 1px solid red;
+}
+
+.food-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem 2rem;
+}
+
+.add-food-cntr {
+  width: 15rem;
+  text-align: center;
+}
+
+.food-input-cntr {
+  border: 1px solid green;
+  display: flex;
+  margin: 0 2rem;
+}
+
+.food-input input {
+  height: 100%;
+  margin-right: 2rem;
+  width: 15rem;
+}
+
+.macros-cntr {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid red;
+}
+
+.macro-input {
+  display: flex;
+}
+
+.macro-input input {
+  width: 2.5rem;
+}
+
+.food-items-cntr {
+  margin: 4rem 2rem;
+  border: 1px solid red;
+}
+
+.food-items-cntr header {
+  width: 15rem;
+  margin-left: auto;
+  margin-right: 4.5rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.food-item-macro-header {
+  text-align: center;
+  width: 5rem;
+}
+
+.food-list {
+  margin-top: 2rem;
+}
+
+.food-list li {
+  width: 100%;
+  min-height: 2rem;
+  display: flex;
+}
+
+.food {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  width: 100%;
+  text-align: center ;
+  border: 1px solid aliceblue;
+}
+
+.food p {
+  font-size: 1.2rem;
+}
+
+
+.item-macro-cntr {
+  border: 1px solid saddlebrown;
+  margin-left: auto;
+  width: 15rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.macro {
+  width: 5rem;
+  margin: auto;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+/* End Food Item Section */
 
 /* End Main */
 
