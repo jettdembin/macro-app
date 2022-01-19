@@ -91,7 +91,6 @@ ul {
 
 /* Start Main */
 main {
-  border: 1px solid red;
   margin: 5vh 2rem;
   min-height: 80vh;
 }
@@ -103,7 +102,6 @@ main {
 }
 
 .weight-input {
-  border: 1px solid red;
   margin: 4rem 0 2rem 0;
   display: flex;
 }
@@ -121,7 +119,6 @@ main {
   display: flex;
   justify-content: space-between;
   margin: 0 2rem;
-  border: 1px solid red;
 }
 
 .goal {
@@ -134,7 +131,6 @@ main {
   color: black;
   background: rgb(255, 255, 255);
   margin: 4rem 2rem;
-  border: 1px solid red;
 }
 
 .calories-header {
@@ -150,7 +146,6 @@ main {
 .calculation-table-cntr {
   display: flex;
   margin: 0 2rem 2rem 2rem;
-  border: 1px solid black;
 }
 
 .calculation-title-cntr {
@@ -165,7 +160,6 @@ main {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  border: 1px solid red;
 }
 
 .calculation-grams {
@@ -183,7 +177,6 @@ main {
 .adjust-cntr {
   display: grid;
   place-items: center;
-  border: 1px solid red;
 }
 
 .adjust-header {
@@ -197,7 +190,6 @@ main {
 .adjust-nav > li{
   font-size: 1.2rem;
   padding: .5rem 2rem;
-  border: 1px solid blue;
   border-radius: .2rem;
 }
 /* End Calculation Section */

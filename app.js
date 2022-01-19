@@ -1,3 +1,4 @@
+//
 const weightInput = document.getElementById('weight');
 const calculate = document.querySelectorAll('button');
 const caloriesTotal = document.querySelector('.calories-total');
@@ -19,7 +20,7 @@ calculate.forEach(btn => {
 
 //function to calculate calories
 function calculateCal(e) {
-    if (e.target.id  === 'cut') {
+    if (e.target.id === 'cut') {
         const calories = weightInput.value * 12;
         caloriesTotal.textContent = calories;
     }
