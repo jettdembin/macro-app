@@ -8,7 +8,7 @@ html, body {
   height: 100%;
   font-size: 62.5%;
   font-family: 'Poppins', sans-serif;
-  color: rgb(255, 255, 255);
+  color: rgb(237, 237, 237);
 }
 
 h1 {
@@ -135,7 +135,8 @@ main {
 
 .calories-header {
   text-align: center;
-  margin: 2rem;
+  padding-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .calories-amnt-cntr {
@@ -187,10 +188,12 @@ main {
   margin: 2rem;
 }
 
-.adjust-nav > li{
+.adjust-nav > li > a{
+  color: rgb(9, 9, 9);
   font-size: 1.2rem;
   padding: .5rem 2rem;
   border-radius: .2rem;
+  cursor: pointer;
 }
 /* End Calculation Section */
 
@@ -198,7 +201,7 @@ main {
 /* Start Food Item Section */
 .food-cntr {
   min-height: 45vh;
-  color: black;
+  color: rgb(9, 9, 9);;
   background: rgb(255, 255, 255);
   margin: 4rem 2rem;
   border: 1px solid red;
