@@ -21,16 +21,58 @@ percentFat.textContent = "0";
 
 const adjustOptions = document.querySelectorAll('.adjust-selection');
 
+let weightValue = [];
+
 //listen to weight input update
 weightInput.addEventListener('keypress', function(e) {
     //validate valid weight submitted
     if (e.key === "Enter") {
         if (regex.test(e.target.value)) {
+            weightValue.pop();
+            const weightInfo = {
+                weight: e.target.value,
+                cut: {
+                    total: Math.round(e.target.value*12),
+                    carb: function() {
+                        return Math.round((this.total*.4)/4);
+                    },
+                    protein: function() {
+                        return Math.round((this.total*.4)/4);
+                    },
+                    fat: function() {
+                        return Math.round((this.total*.2)/9);
+                    }
+                },
+                maintain: {
+                    total: Math.round(e.target.value*15),
+                    carb: function() {
+                        return Math.round((this.total*.5)/4);
+                    },
+                    protein: function() {
+                        return Math.round((this.total*.2)/4);
+                    },
+                    fat: function() {
+                        return Math.round((this.total*.3)/9);
+                    }
+                },
+                bulk: {
+                    total: Math.round(e.target.value*18),
+                    carb: function() {
+                        return Math.round((this.total*.5)/4);
+                    },
+                    protein: function() {
+                        return Math.round((this.total*.15)/4);
+                    },
+                    fat: function() {
+                        return Math.round((this.total*.35)/9);
+                    }
+                }
+            };
+            weightValue.push(weightInfo);
             updateWeight(e);
             adjustOptions.forEach(option => {
                 option.removeEventListener('click', adjustMeals);
                 option.addEventListener('click', adjustMeals);
-                console.log(option)
             });
         } else {
             alert("Please only enter integers. Only one decimal is allowed")
@@ -50,15 +92,15 @@ function calculateCal(e) {
     adjustOptions.forEach(option => {
         option.removeEventListener('click', adjustMeals);
         option.addEventListener('click', adjustMeals);
-        console.log(option)
     });
     if (e.target.id === 'cut') {
-        const calories = Math.round(weightInput.value * 12);
-        caloriesTotal.textContent = calories;
+        const cut = weightValue[0].cut.total;
+        console.log(weightValue[0].cut.carb())
+        caloriesTotal.textContent =  cut;
 
-        const carb = Math.round((calories * .4) / 4);
-        const protein = Math.round((calories * .4) / 4);
-        const fat = Math.round((calories * .2) / 9);
+        const carb = Math.round((cut * .4) / 4);
+        const protein = Math.round((cut * .4) / 4);
+        const fat = Math.round((cut * .2) / 9);
         caloricCarb.textContent = carb;
         caloricProtein.textContent = protein;
         caloricFat.textContent = fat;
@@ -101,14 +143,8 @@ function calculateCal(e) {
 
 //function to update weight value
 function updateWeight(e) {
-    // weight = e.target.value;
     weightInput.setAttribute('value', e.target.value);
 };
-
-// //function to listen adjust meals
-// adjustOptions.forEach(option => {
-//     option.addEventListener('click', adjustMeals);
-// });
 
 const calorieHeader = document.querySelector(".calories-header h2");
 
@@ -122,7 +158,6 @@ function adjustMeals(e) {
         calorieHeader.textContent = "Calories Per Meal";
     }
     if (e.target.textContent === "3") {
-        calorieHeader.textContent = "Calories Per Meal";
         let total = Number(caloriesTotal.textContent)/3;
         let carb = Number(caloricCarb.textContent)/3;
         let protein = Number(caloricFat.textContent)/3;
@@ -135,17 +170,30 @@ function adjustMeals(e) {
 
         e.target.removeEventListener('click', adjustMeals);
     }
-    
     if (e.target.textContent === "4") {
-        caloriesTotal.textContent = Math.round(Number(caloriesTotal.textContent)/4);
-        caloricCarb.textContent = Math.round(Number(caloricCarb.textContent)/4);
-        caloricProtein.textContent = Math.round(Number(caloricProtein.textContent)/4);
-        caloricFat.textContent = Math.round(Number(caloricFat.textContent)/4);
+        let total = Number(caloriesTotal.textContent)/4;
+        let carb = Number(caloricCarb.textContent)/4;
+        let protein = Number(caloricFat.textContent)/4;
+        let fat = Number(caloricProtein.textContent)/4;
+
+        caloriesTotal.textContent = Math.round(total);
+        caloricCarb.textContent = Math.round(carb);
+        caloricProtein.textContent = Math.round(protein);
+        caloricFat.textContent = Math.round(fat);
+
+        e.target.removeEventListener('click', adjustMeals);
     }
     if (e.target.textContent === "5") {
-        caloriesTotal.textContent = Math.round(Number(caloriesTotal.textContent)/5);
-        caloricCarb.textContent = Math.round(Number(caloricCarb.textContent)/5);
-        caloricProtein.textContent = Math.round(Number(caloricProtein.textContent)/5);
-        caloricFat.textContent = Math.round(Number(caloricFat.textContent)/5);
+        let total = Number(caloriesTotal.textContent)/5;
+        let carb = Number(caloricCarb.textContent)/5;
+        let protein = Number(caloricFat.textContent)/5;
+        let fat = Number(caloricProtein.textContent)/5;
+
+        caloriesTotal.textContent = Math.round(total);
+        caloricCarb.textContent = Math.round(carb);
+        caloricProtein.textContent = Math.round(protein);
+        caloricFat.textContent = Math.round(fat);
+
+        e.target.removeEventListener('click', adjustMeals);
     }
 }
