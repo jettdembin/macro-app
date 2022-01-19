@@ -8,6 +8,8 @@ const caloricFat = document.getElementById('calculation-f');
 const percentCarb = document.getElementById('percentage-c');
 const percentProtein = document.getElementById('percentage-p');
 const percentFat = document.getElementById('percentage-f');
+const hiddenSections = document.querySelectorAll('.hide-cntr');
+const navItems = document.querySelectorAll('.nav-item');
 
 const regex = /^(0|[1-9]\d*)(\.\d+)?$/;
 
@@ -26,6 +28,8 @@ let weightTotalPerDay;
 let carbTotal;
 let proteinTotal;
 let fatTotal;
+
+// START EVENT LISTENERS
 
 //listen to weight input update
 weightInput.addEventListener('keypress', function(e) {
@@ -79,18 +83,17 @@ weightInput.addEventListener('keypress', function(e) {
         }
     }
 });
-
 //listen for meals per day adjuster
 adjustOptions.forEach(option => {
     option.addEventListener('click', adjustMeals);
 });
-
 //listen to click for calculate
 calculate.forEach(btn => {
     btn.addEventListener('click', (e)=> {
         calculateCal(e);
     });
 });
+// END EVENT LISTENERS
 
 //function to calculate calories
 function calculateCal(e) {
@@ -172,3 +175,25 @@ function adjustMeals(e) {
         caloricFat.textContent = Math.round(fatTotal/5);
     }
 }
+
+//listener for navigation
+navItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+        showActive(e.currentTarget);
+        console.log(e.currentTarget)
+    });
+});
+
+function showActive(e) {
+    hiddenSections.forEach(section => {
+    section.classList.remove('show-cntr');
+    });
+    if (e.textContent === "Log Items") {
+        console.log(document.getElementById(e.textContent.trim()))
+        document.getElementById(e.textContent.trim()).classList.add("show-cntr");
+    }
+    if (e.textContent === "Home") {
+        console.log(document.getElementById(e.textContent.trim()))
+        document.getElementById(e.textContent.trim()).classList.add("show-cntr");
+    }
+};

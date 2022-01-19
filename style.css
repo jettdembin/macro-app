@@ -11,6 +11,10 @@ html, body {
   color: rgb(237, 237, 237);
 }
 
+body {
+  overflow: hidden;
+} 
+
 h1 {
   font-size: 2.6rem;
   font-weight: normal;
@@ -41,7 +45,11 @@ button {
 }
 
 .container {
-  height: 100%; 
+  display: flex;
+  flex-direction: column;
+  align-items: space-around;
+  justify-content: center;
+  height: 100vh; 
   position: relative;
 }
 
@@ -91,7 +99,9 @@ ul {
 
 /* Start Main */
 main {
-  margin: 5vh 2rem;
+  display: flex;
+  border: 1px solid black;
+  margin: auto;
   min-height: 80vh;
 }
 
@@ -102,7 +112,7 @@ main {
 }
 
 .weight-input {
-  margin: 4rem 0 2rem 0;
+  margin: 4rem 0;
   display: flex;
 }
 
@@ -123,7 +133,6 @@ main {
 
 .goal {
   text-align: center;
-  border: 1px solid green;
 }
 
 /* Start Calculation Section */
@@ -306,4 +315,44 @@ main {
 /* End Food Item Section */
 
 /* End Main */
+
+/* show active */
+.hide-cntr {
+  position: absolute;
+  display: none;
+}
+
+.show-cntr {
+  position: relative;
+  display: block;
+}
+
+@media only screen and (max-width: 380px) {
+  .weight-input {
+    margin: 2rem 0;
+  }
+  .goal-header-cntr {
+    margin: 1rem;
+  }
+  /* Start Calculation Section */
+  .calculation-cntr {
+    margin: 2rem 2rem;
+  }
+  .calories-header {
+    text-align: center;
+    padding-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  .calories-amnt-cntr {
+    margin-bottom: 1rem;
+  }
+  .calculation-table-cntr {
+    display: flex;
+    margin: 0 2rem 2rem 2rem;
+  }
+  .calculation-title-cntr {
+    min-height: auto;
+    margin-right: 2rem;
+  }
+}
 
