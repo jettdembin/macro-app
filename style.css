@@ -47,7 +47,6 @@ button {
 .container {
   display: flex;
   flex-direction: column;
-  align-items: space-around;
   justify-content: center;
   height: 100vh; 
   position: relative;
@@ -229,14 +228,23 @@ main {
 
 .food-input-cntr {
   border: 1px solid green;
-  display: flex;
   margin: 0 2rem;
 }
 
-.food-input input {
+.food-input-wrapper {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  gap: 2rem;
+}
+
+.food-input {
+  width: 100%;
   height: 100%;
-  margin-right: 2rem;
-  width: 15rem;
+}
+
+.food-input input {
+  width: 100%;
+  height: 100%;
 }
 
 .macros-cntr {
@@ -246,11 +254,7 @@ main {
   border: 1px solid red;
 }
 
-.macro-input {
-  display: flex;
-}
-
-.macro-input input {
+.macros-cntr input {
   width: 2.5rem;
 }
 
@@ -273,6 +277,8 @@ main {
 }
 
 .food-list {
+  display: flex;
+  flex-direction: column;
   margin-top: 2rem;
 }
 
@@ -324,6 +330,7 @@ main {
 
 .show-cntr {
   position: relative;
+  top: 0;
   display: block;
 }
 

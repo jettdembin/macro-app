@@ -159,22 +159,16 @@
           <h2>Input Macros</h2>
         </div>
         <form class="food-input-cntr">
-          <div class="food-input">
-            <input type="text"/>
-          </div>
-          <div class="macros-cntr">
-            <div class="macro-input">
-              <input type="text" placeholder="C"/>
-              <h4>g</h4>
+          <div class="food-input-wrapper" data-food data-carb data-protein data-fat>
+            <div class="food-input">
+              <input class="macro-input" type="text" id="data-food"/>
             </div>
-            <div class="macro-input">
-              <input type="text" placeholder="P"/>
-              <h4>g</h4>
+            <div>
+              <input class="macro-input" type="text" placeholder="Carbs(grams)" id="data-carb"/>
+              <input class="macro-input" type="text" placeholder="Protein(grams)" id="data-protein"/>
+              <input class="macro-input" type="text" placeholder="Fat(grams)" id="data-fat"/>
             </div>
-            <div class="macro-input">
-              <input type="text" placeholder="F"/>
-              <h4>g</h4>
-            </div>
+            <button type="submit">Submit form</button>
           </div>
         </form>
         <div class="food-items-cntr">
@@ -190,25 +184,6 @@
             </div>
           </header>
           <ul class="food-list">
-            <li>
-              <div class="food">
-                <p>chicken</p>
-              </div>
-              <div class="item-macro-cntr">
-                <div class="macro">
-                  10g
-                </div>
-                <div class="macro">
-                  10g
-                </div>
-                <div class="macro">
-                  10g
-                </div>
-              </div>
-              <button class="item-button" type="submit">
-                <i class="fas fa-plus-square"></i>
-              </button>
-            </li>
           </ul>
         </div>
       </section>
