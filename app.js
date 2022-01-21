@@ -78,10 +78,19 @@ weightInput.addEventListener('keypress', function(e) {
 function totals(total, carb, protein, fat) {
     let totalArray = {  
         weightTotalPerDay: total,
-        carbTotal: Number(carb),
-        proteinTotal: Number(protein),
-        fatTotal: Number(fat)
+        carbTotal() {
+            return caloricCarb.textContent = carb;
+        },
+        proteinTotal() {
+            return caloricProtein.textContent = protein;
+        },
+        fatTotal() {
+            return caloricFat.textContent = fat;
+        }
     }
+    totalArray.carbTotal();
+    totalArray.proteinTotal();
+    totalArray.fatTotal();
     console.log(totalArray)
     return totalArray;
 }; 
@@ -95,26 +104,19 @@ function value(type) {
             percentCarb = .4;
             percentProtein = .4;
             percentFat = .2;
-            caloricCarb.textContent = calcMacroTotal(weightTotalPerDay, percentCarb, carbsOrProteinFn);
-            caloricProtein.textContent = calcMacroTotal(weightTotalPerDay, percentProtein, carbsOrProteinFn);
-            caloricFat.textContent = calcMacroTotal(weightTotalPerDay, percentFat, fatFn);
-            totals(weightTotalPerDay, caloricCarb.textContent, caloricProtein.textContent, caloricFat.textContent);
+            totals(weightTotalPerDay, calcMacroTotal(weightTotalPerDay, percentCarb, carbsOrProteinFn), calcMacroTotal(weightTotalPerDay, percentProtein, carbsOrProteinFn), calcMacroTotal(weightTotalPerDay, percentFat, fatFn));
           break;
         case "maintain":
             percentCarb = .5;
             percentProtein = .2;
             percentFat = .3;
-            caloricCarb.textContent = calcMacroTotal(weightTotalPerDay, percentCarb, carbsOrProteinFn);
-            caloricProtein.textContent = calcMacroTotal(weightTotalPerDay, percentProtein, carbsOrProteinFn);
-            caloricFat.textContent = calcMacroTotal(weightTotalPerDay, percentFat, fatFn);
+            totals(weightTotalPerDay, calcMacroTotal(weightTotalPerDay, percentCarb, carbsOrProteinFn), calcMacroTotal(weightTotalPerDay, percentProtein, carbsOrProteinFn), calcMacroTotal(weightTotalPerDay, percentFat, fatFn));
           break;
         case "bulk":
             percentCarb = .5;
             percentProtein = .15;
             percentFat = .35;
-            caloricCarb.textContent = calcMacroTotal(weightTotalPerDay, percentCarb, carbsOrProteinFn);
-            caloricProtein.textContent = calcMacroTotal(weightTotalPerDay, percentProtein, carbsOrProteinFn);
-            caloricFat.textContent = calcMacroTotal(weightTotalPerDay, percentFat, fatFn);
+            totals(weightTotalPerDay, calcMacroTotal(weightTotalPerDay, percentCarb, carbsOrProteinFn), calcMacroTotal(weightTotalPerDay, percentProtein, carbsOrProteinFn), calcMacroTotal(weightTotalPerDay, percentFat, fatFn));
           break;
     }
 }
