@@ -34,7 +34,6 @@ let fatTotal;
 navItems.forEach(item => {
     item.addEventListener('click', function(e) {
         showActive(e.currentTarget);
-        console.log(e.currentTarget)
     });
 });
 
@@ -90,6 +89,71 @@ weightInput.addEventListener('keypress', function(e) {
         }
     }
 });
+
+// const weightInfo = {
+//     weight() {
+//         const updateValue = () => {
+//             weightInput.setAttribute('value', weightInput.value);
+//             return weightInput.value;
+//         };
+//         updateValue(); 
+//     },
+//     cut: {
+//         total: Math.round(this.weight()*12),
+//         carb() {
+//             return Math.round((this.total*.4)/4);
+//         },
+//         protein() {
+//             return Math.round((this.total*.4)/4);
+//         },
+//         fat() {
+//             return Math.round((this.total*.2)/9);
+//         }
+//     },
+//     maintain: {
+//         total: Math.round(weightInput.value*15),
+//         carb() {
+//             return Math.round((this.total*.5)/4);
+//         },
+//         protein() {
+//             return Math.round((this.total*.2)/4);
+//         },
+//         fat() {
+//             return Math.round((this.total*.3)/9);
+//         }
+//     },
+//     bulk: {
+//         total: Math.round(weightInput.value*18),
+//         carb() {
+//             return Math.round((this.total*.5)/4);
+//         },
+//         protein() {
+//             return Math.round((this.total*.15)/4);
+//         },
+//         fat() {
+//             return Math.round((this.total*.35)/9);
+//         }
+//     }
+// };
+// weightInput.addEventListener('keypress', function(e) {
+//     //validate valid weight submitted
+//     if (e.key === 'Enter') {
+//         console.log(weightInfo.weight());
+//         if (regex.test(e.target.value)) {
+//             weightValues.pop();
+//             weightValues.push(weightInfo);
+//         } else {
+//             alert("Please only enter integers. Only one decimal is allowed")
+//         }
+//     }
+// });
+
+//function to update weight value
+function updateValue(e) {
+    weightInput.setAttribute('value', e.target.value);
+};
+
+
 //listen for meals per day adjuster
 adjustOptions.forEach(option => {
     option.addEventListener('click', adjustMeals);
@@ -102,6 +166,9 @@ calculate.forEach(btn => {
 });
 // END EVENT LISTENERS
 
+const displayWeight = document.querySelector('.weight-input h1');
+const displayGoal = document.querySelector('.goal-header-cntr h2');
+
 //function to calculate calories
 function calculateCal(e) {
     if (e.target.id === 'cut') {
@@ -109,6 +176,9 @@ function calculateCal(e) {
         proteinTotal = weightValues[0].cut.protein();
         fatTotal = weightValues[0].cut.fat();
         weightTotalPerDay = weightValues[0].cut.total;
+
+        displayWeight.textContent = `${weightTotalPerDay} Calories`;
+
         caloriesTotal.textContent = weightTotalPerDay;
         caloricCarb.textContent = carbTotal;
         caloricProtein.textContent = proteinTotal;
@@ -148,10 +218,6 @@ function calculateCal(e) {
     }
 };
 
-//function to update weight value
-function updateValue(e) {
-    weightInput.setAttribute('value', e.target.value);
-};
 
 const calorieHeader = document.querySelector(".calories-header h2");
 
@@ -188,11 +254,9 @@ function showActive(e) {
     section.classList.remove('show-cntr');
     });
     if (e.textContent === "Log Items") {
-        console.log(document.getElementById(e.textContent.trim()))
         document.getElementById(e.textContent.trim()).classList.add("show-cntr");
     }
     if (e.textContent === "Home") {
-        console.log(document.getElementById(e.textContent.trim()))
         document.getElementById(e.textContent.trim()).classList.add("show-cntr");
     }
 };
@@ -204,29 +268,40 @@ const foodCarb = document.querySelector('#data-carb');
 const foodProtein = document.querySelector('#data-protein');
 const foodFat = document.querySelector('#data-fat');
 //save added food item into one
-console.log(foodInputCntr.dataset)
 
 //function to update weight value
-function updateFood(e) {
-    foodInputCntr.setAttribute('data-food', foodInput.value);
-    foodInputCntr.setAttribute('data-carb', foodCarb.value);
-    foodInputCntr.setAttribute('data-protein', foodProtein.value);
-    foodInputCntr.setAttribute('data-fat', foodFat.value);
+function updateFood(dataItem, cntr) {
+    if (document.getElementById(dataItem)) {
+        if (dataItem !== 'data-food') {
+            if (regex.test(document.getElementById(dataItem).value)) {
+                cntr.setAttribute(`${dataItem}`, document.getElementById(dataItem).value);
+            } else {
+                alert('Please only input a valid integer to 2 decimal places.');
+            }
+        } else {
+            cntr.setAttribute(`${dataItem}`, document.getElementById(dataItem).value);
+        }
+        cntr.setAttribute(`${dataItem}`, document.getElementById(dataItem).value);
+    }
 };
 
 //listen to weight input update
 formInputs.forEach(input => {
-    input.addEventListener('click', function(e) {
+    let data = input.id;
+    console.log(input.id)
+    input.addEventListener('input', function(e) {
         e.preventDefault();
-        updateFood(e);
+        updateFood(data, foodInputCntr);
     });
 });
 
 const foodList = document.querySelector('.food-list');
 const foodInputForm = document.querySelector('.food-input-cntr');
-console.log(foodInputForm);
-foodInputForm.addEventListener('submit', function(e) {
-    console.log(foodInputCntr.dataset.food);
+
+//listen for addition of food
+foodInputForm.addEventListener('submit',addFood);
+
+function addFood(e) {
     e.preventDefault();
     const foodItem = document.createElement('li');
     foodItem.innerHTML = `
@@ -248,16 +323,29 @@ foodInputForm.addEventListener('submit', function(e) {
             <i class="fas fa-plus-square"></i>
         </button>
     `;
-    console.log(foodItem);
     foodList.appendChild(foodItem);
-});
+    updateCalories();
+    formInputs.forEach(input => {
+        input.value = '';
+    });
+}
+foodInputForm.addEventListener('submit', addFood);
 
-// const buttons = document.querySelectorAll("[data-modal-id]")
-
-// buttons.forEach(button => {
-//   button.addEventListener("click", () => {
-//     const modalId = button.dataset.modalId
-//     const modal = document.getElementById(modalId)
-//     modal.classList.add("show")
-//   })
-// })
+//listen for update of calories
+function updateCalories() {
+    const foodMacrosRemaining = document.querySelectorAll('.food-item-macro-header h6');
+    foodMacrosRemaining.forEach(macro => {
+        // carbTotal
+        // proteinTotal
+        // fatTotal
+        let macroType = macro.dataset;
+        for (const key in macroType) {
+            if (macroType.hasOwnProperty(key)) {
+                //set value of data-attrib on header
+                console.log(macro.dataset)
+                updateFood(`data-${key}`, macro);
+                macro.textContent = `${macroType[key]}`;
+            }
+        }
+    });
+};
