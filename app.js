@@ -24,7 +24,10 @@ percentFat.textContent = "0";
 const adjustOptions = document.querySelectorAll('.adjust-selection');
 
 let weightValues = [];
-let [weightTotalPerDay, carbTotal, proteinTotal, fatTotal] = totalArray;
+let weightTotalPerDay;
+let carbTotal;
+let proteinTotal;
+let fatTotal;
 
 // START EVENT LISTENERS
 //listen for navigation
@@ -64,6 +67,7 @@ weightInput.addEventListener('keypress', function(e) {
             };
             weightValues.push(weightInfo);
             updateValue(e);
+            console.log("hi")
         } else {
             alert("Please only enter integers. Only one decimal is allowed")
         }
@@ -198,7 +202,6 @@ function adjustMeals(e) {
         calorieHeader.textContent = "Calories Per Meal";
     }
     if (e.target.textContent === "3") {
-        caloriesTypeCntrs = document.querySelectorAll('[data-calculation="total"]');
         caloriesTotal.textContent = weightTotalPerDay/3;
         caloricCarb.textContent = Math.round(carbTotal/3);
         caloricProtein.textContent = Math.round(proteinTotal/3);
