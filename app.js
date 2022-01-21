@@ -75,17 +75,16 @@ weightInput.addEventListener('keypress', function(e) {
 });
 // [weightTotalPerDay, carbTotal, proteinTotal, fatTotal] = totalArray;
 
-// function totals(total, carb, protein, fat) {
-//     let totalArray = {  
-//         weightTotalPerDay: total,
-//         carbTotal: carb,
-//         proteinTotal: protein,
-//         fatTotal: fat
-//     }
-//     console.log(totalArray)
-//     return totalArray;
-// }
-// totals(weightTotalPerDay, caloricCarb, caloricProtein, caloricProtein);
+function totals(total, carb, protein, fat) {
+    let totalArray = {  
+        weightTotalPerDay: total,
+        carbTotal: Number(carb),
+        proteinTotal: Number(protein),
+        fatTotal: Number(fat)
+    }
+    console.log(totalArray)
+    return totalArray;
+}; 
 
 function value(type) {
     let percentCarb;
@@ -99,6 +98,7 @@ function value(type) {
             caloricCarb.textContent = calcMacroTotal(weightTotalPerDay, percentCarb, carbsOrProteinFn);
             caloricProtein.textContent = calcMacroTotal(weightTotalPerDay, percentProtein, carbsOrProteinFn);
             caloricFat.textContent = calcMacroTotal(weightTotalPerDay, percentFat, fatFn);
+            totals(weightTotalPerDay, caloricCarb.textContent, caloricProtein.textContent, caloricFat.textContent);
           break;
         case "maintain":
             percentCarb = .5;
@@ -203,6 +203,7 @@ function adjustMeals(e) {
     }
     if (e.target.textContent === "3") {
         caloriesTotal.textContent = weightTotalPerDay/3;
+        console.log(carbTotal);
         caloricCarb.textContent = Math.round(carbTotal/3);
         caloricProtein.textContent = Math.round(proteinTotal/3);
         caloricFat.textContent = Math.round(fatTotal/3);
