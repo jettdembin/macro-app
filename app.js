@@ -24,10 +24,8 @@ percentFat.textContent = "0";
 const adjustOptions = document.querySelectorAll('.adjust-selection');
 
 let weightValues = [];
-let weightTotalPerDay;
-let carbTotal;
-let proteinTotal;
-let fatTotal;
+let totalArray = [];
+let [weightTotalPerDay, carbTotal, proteinTotal, fatTotal] = totalArray;
 
 // START EVENT LISTENERS
 //listen for navigation
@@ -37,6 +35,63 @@ navItems.forEach(item => {
     });
 });
 
+
+// let [weightTotalPerDay, carbTotal, proteinTotal, fatTotal] = totalArray;
+function percentAmount(type) {
+    switch (type) {
+        case "cut":
+            percentCarb.textContent = 40;
+            percentProtein.textContent = 40;
+            percentFat.textContent = 20;
+          break;
+        case "maintain":
+            percentCarb.textContent = 40;
+            percentProtein.textContent = 40;
+            percentFat.textContent = 20;
+          break;
+        case "bulk":
+            percentCarb.textContent = 40;
+            percentProtein.textContent = 40;
+            percentFat.textContent = 20;
+          break;
+    }
+}
+
+function value(type, callback) {
+    let percentCarb;
+    let percentProtein;
+    let percentFat;
+    switch (type) {
+        case "cut":
+            percentCarb = .4;
+            percentProtein = .4;
+            percentFat = .2;
+          break;
+        case "maintain":
+            percentCarb = .5;
+            percentProtein = .2;
+            percentFat = .3;
+          break;
+        case "bulk":
+            percentCarb = .5;
+            percentProtein = .15;
+            percentFat = .35;
+          break;
+    }
+    let calcMacroTotal = function (percentage, callback) {
+        return callback(percentage);
+    }
+    calcMacroTotal()
+    caloricCarb.textContent = Math.round((weightTotalPerDay*percentCarb)/4);
+    caloricProtein.textContent = Math.round((weightTotalPerDay*percentProtein)/4);
+    caloricFat.textContent = Math.round((weightTotalPerDay*percentFat)/4);
+}
+
+// function percentValues(totalWeight, )
+// totalArray.map(total => {
+
+// })
+
 //listen to weight input update
 weightInput.addEventListener('keypress', function(e) {
     //validate valid weight submitted
@@ -44,41 +99,88 @@ weightInput.addEventListener('keypress', function(e) {
         if (regex.test(e.target.value)) {
             weightValues.pop();
             const weightInfo = {
-                weight: e.target.value,
                 cut: {
-                    total: Math.round(e.target.value*12),
-                    carb() {
-                        return Math.round((this.total*.4)/4);
-                    },
-                    protein() {
-                        return Math.round((this.total*.4)/4);
-                    },
-                    fat() {
-                        return Math.round((this.total*.2)/9);
+                    values() {
+                        const total = () => {
+                            weightTotalPerDay = Math.round(e.target.value*12);
+                            caloriesTotal.textContent = weightTotalPerDay;
+                            return
+                        }
+                        total();
+                        const carb = () => {
+                            carbTotal = Math.round((weightTotalPerDay*.4)/4);
+                            caloricCarb.textContent = carbTotal;
+                            return
+                        }
+                        const protein = () => {
+                            proteinTotal = Math.round((weightTotalPerDay*.4)/4);
+                            caloricProtein.textContent = proteinTotal;
+                            return
+                        }
+                        const fat = () => {
+                            fatTotal = Math.round((weightTotalPerDay*.2)/9);
+                            caloricFat.textContent = fatTotal;
+                            return
+                        }
+                        carb();
+                        protein();
+                        fat();
                     }
                 },
                 maintain: {
-                    total: Math.round(e.target.value*15),
-                    carb() {
-                        return Math.round((this.total*.5)/4);
-                    },
-                    protein() {
-                        return Math.round((this.total*.2)/4);
-                    },
-                    fat() {
-                        return Math.round((this.total*.3)/9);
+                    values() {
+                        const total = () => {
+                            weightTotalPerDay = Math.round(e.target.value*15);
+                            caloriesTotal.textContent = weightTotalPerDay;
+                            return
+                        }
+                        total();
+                        const carb = () => {
+                            carbTotal = Math.round((weightTotalPerDay*.5)/4);
+                            caloricCarb.textContent = carbTotal;
+                            return
+                        }
+                        const protein = () => {
+                            proteinTotal = Math.round((weightTotalPerDay*.2)/4);
+                            caloricProtein.textContent = proteinTotal;
+                            return
+                        }
+                        const fat = () => {
+                            fatTotal = Math.round((weightTotalPerDay*.3)/9);
+                            caloricFat.textContent = fatTotal;
+                            return
+                        }
+                        carb();
+                        protein();
+                        fat();
                     }
                 },
                 bulk: {
-                    total: Math.round(e.target.value*18),
-                    carb() {
-                        return Math.round((this.total*.5)/4);
-                    },
-                    protein() {
-                        return Math.round((this.total*.15)/4);
-                    },
-                    fat() {
-                        return Math.round((this.total*.35)/9);
+                    values() {
+                        const total = () => {
+                            weightTotalPerDay = Math.round(e.target.value*18);
+                            caloriesTotal.textContent = weightTotalPerDay;
+                            return
+                        }
+                        total();
+                        const carb = () => {
+                            carbTotal = Math.round((weightTotalPerDay*.5)/4);
+                            caloricCarb.textContent = carbTotal;
+                            return
+                        }
+                        const protein = () => {
+                            proteinTotal = Math.round((weightTotalPerDay*.15)/4);
+                            caloricProtein.textContent = proteinTotal;
+                            return
+                        }
+                        const fat = () => {
+                            fatTotal = Math.round((weightTotalPerDay*.35)/9);
+                            caloricFat.textContent = fatTotal;
+                            return
+                        }
+                        carb();
+                        protein();
+                        fat();
                     }
                 }
             };
@@ -89,64 +191,6 @@ weightInput.addEventListener('keypress', function(e) {
         }
     }
 });
-
-// const weightInfo = {
-//     weight() {
-//         const updateValue = () => {
-//             weightInput.setAttribute('value', weightInput.value);
-//             return weightInput.value;
-//         };
-//         updateValue(); 
-//     },
-//     cut: {
-//         total: Math.round(this.weight()*12),
-//         carb() {
-//             return Math.round((this.total*.4)/4);
-//         },
-//         protein() {
-//             return Math.round((this.total*.4)/4);
-//         },
-//         fat() {
-//             return Math.round((this.total*.2)/9);
-//         }
-//     },
-//     maintain: {
-//         total: Math.round(weightInput.value*15),
-//         carb() {
-//             return Math.round((this.total*.5)/4);
-//         },
-//         protein() {
-//             return Math.round((this.total*.2)/4);
-//         },
-//         fat() {
-//             return Math.round((this.total*.3)/9);
-//         }
-//     },
-//     bulk: {
-//         total: Math.round(weightInput.value*18),
-//         carb() {
-//             return Math.round((this.total*.5)/4);
-//         },
-//         protein() {
-//             return Math.round((this.total*.15)/4);
-//         },
-//         fat() {
-//             return Math.round((this.total*.35)/9);
-//         }
-//     }
-// };
-// weightInput.addEventListener('keypress', function(e) {
-//     //validate valid weight submitted
-//     if (e.key === 'Enter') {
-//         console.log(weightInfo.weight());
-//         if (regex.test(e.target.value)) {
-//             weightValues.pop();
-//             weightValues.push(weightInfo);
-//         } else {
-//             alert("Please only enter integers. Only one decimal is allowed")
-//         }
-//     }
-// });
 
 //function to update weight value
 function updateValue(e) {
@@ -161,56 +205,44 @@ adjustOptions.forEach(option => {
 //listen to click for calculate
 calculate.forEach(btn => {
     btn.addEventListener('click', (e)=> {
-        calculateCal(e);
+        displayCal(e);
     });
 });
 // END EVENT LISTENERS
 
 const displayWeight = document.querySelector('.weight-input h1');
-const displayGoal = document.querySelector('.goal-header-cntr h2');
+const displayGoal = document.querySelectorAll('.goal-header-cntr h2');
+
+//function to display cuurent goal
+function displayHeader(goal) {
+    for (const header of displayGoal) {
+        header.textContent = `Current Goal: ${goal.toUpperCase()}`;
+    }
+};
+
+//function to map macors to variables after calculation
 
 //function to calculate calories
-function calculateCal(e) {
+function displayCal(e) {
     if (e.target.id === 'cut') {
-        carbTotal = weightValues[0].cut.carb();
-        proteinTotal = weightValues[0].cut.protein();
-        fatTotal = weightValues[0].cut.fat();
-        weightTotalPerDay = weightValues[0].cut.total;
-
-        displayWeight.textContent = `${weightTotalPerDay} Calories`;
-
-        caloriesTotal.textContent = weightTotalPerDay;
-        caloricCarb.textContent = carbTotal;
-        caloricProtein.textContent = proteinTotal;
-        caloricFat.textContent = fatTotal;
+        weightValues[0].cut.values();
+        displayHeader(e.target.id);
 
         percentCarb.textContent = 40;
         percentProtein.textContent = 40;
         percentFat.textContent = 20;
     }
     if (e.target.id === 'maintain') {
-        carbTotal = weightValues[0].maintain.carb();
-        proteinTotal = weightValues[0].maintain.protein();
-        fatTotal = weightValues[0].maintain.fat();
-        weightTotalPerDay = weightValues[0].maintain.total;
-        caloriesTotal.textContent = weightTotalPerDay;
-        caloricCarb.textContent = carbTotal;
-        caloricProtein.textContent = proteinTotal;
-        caloricFat.textContent = fatTotal;
+        weightValues[0].maintain.values();
+        displayHeader(e.target.id);
         
         percentCarb.textContent = 50;
         percentProtein.textContent = 20;
         percentFat.textContent = 30;
     }
     if (e.target.id === 'bulk') {
-        carbTotal = weightValues[0].bulk.carb();
-        proteinTotal = weightValues[0].bulk.protein();
-        fatTotal = weightValues[0].bulk.fat();
-        weightTotalPerDay = weightValues[0].bulk.total;
-        caloriesTotal.textContent = weightTotalPerDay;
-        caloricCarb.textContent = carbTotal;
-        caloricProtein.textContent = proteinTotal;
-        caloricFat.textContent = fatTotal;
+        weightValues[0].bulk.values();
+        displayHeader(e.target.id);
 
         percentCarb.textContent = 50;
         percentProtein.textContent = 15;
