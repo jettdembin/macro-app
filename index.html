@@ -132,19 +132,19 @@
         <div class="goal-wrapper">
           <div class="goal">
             <h4>Carbs(C)</h4>
-            <h4><span></span>g</h4>
+            <h4><span id="carb" data-carb></span>g</h4>
           </div>
         </div>
         <div class="goal-wrapper">
           <div class="goal">
             <h4>Protein(P)</h4>
-            <h4><span></span>g</h4>
+            <h4><span id="protein" data-protein></span>g</h4>
           </div>
         </div>
         <div class="goal-wrapper">
           <div class="goal">
             <h4>Fat(F)</h4>
-            <h4><span></span>g</h4>
+            <h4><span id="fat" data-fat></span>g</h4>
           </div>
         </div>
       </section>
@@ -173,14 +173,24 @@
         </form>
         <div class="food-items-cntr">
           <header>
-            <div class="food-item-macro-header">
-              <h6 data-carb>(C)</h6>
+            <div class="select">
+              <select name="foods" class="filter-food">
+                <option value="all">All</option>
+                <option value="meats">Meats</option>
+                <option value="starches">Starches</option>
+                <option value="vegetables">Vegetables</option>
+              </select>
             </div>
-            <div class="food-item-macro-header">
-              <h6 data-protein>(P)</h6>
-            </div>
-            <div class="food-item-macro-header">
-              <h6 data-fat>(F)</h6>
+            <div class="food-item-macros">
+              <div class="food-item-macro-header">
+                <h6 data-carb>(C)</h6>
+              </div>
+              <div class="food-item-macro-header">
+                <h6 data-protein>(P)</h6>
+              </div>
+              <div class="food-item-macro-header">
+                <h6 data-fat>(F)</h6>
+              </div>
             </div>
           </header>
           <ul class="food-list">

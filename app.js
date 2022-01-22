@@ -225,7 +225,8 @@ calculate.forEach(btn => {
 const displayWeight = document.querySelector('.weight-input h1');
 const displayGoal = document.querySelectorAll('.goal-header-cntr h2');
 
-//function to display cuurent goal
+
+//function to display current goal
 function displayHeader(goal) {
     for (const header of displayGoal) {
         header.textContent = `Current Goal: ${goal.toUpperCase()}`;
@@ -378,39 +379,53 @@ function addFood(e) {
 //listen to submission of new food
 foodInputForm.addEventListener('submit', addFood);
 
+// const displayMacros = document.querySelectorAll('.goal h4 span');
+
+//funciton to display total macros for each
+// function displayMacro() {
+//     for (const macro of displayMacros) {
+        
+//     }
+// };
 
 //update of calories
 function updateCalories() {
-    const foodMacrosRemaining = document.querySelectorAll('.food-item-macro-header h6');
-    foodMacrosRemaining.forEach(macro => {
-        remainingContainer = {
-            carb: carbTotal,
-            protein: proteinTotal,
-            fat: fatTotal
-        };
-
-        let macroType = macro.dataset;
-        for (const key in macroType) {
-            if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
-                updateFood(`data-${key}`, macro);
-                let total = macroType[`${key}Total`];
-                
-                //if first food item added
-                if (total === undefined) {
-                    updateFood(`data-${key}-total`, macro, `${macroType[key]}`);
-                    updateFood(`data-${key}-remaining`, macro, `${reduceCal(remainingContainer[key], macroType[key])}`);
-                    macro.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
-                } else {
-
-                    updateFood(`data-${key}-total`, macro, `${Number(macroType[key]) + Number(total) }`);
-                    updateFood(`data-${key}-remaining`, macro, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
-                    //header content
-                    macro.textContent = `${reduceCal(remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
-                }
-            }
-        }
+    document.querySelectorAll('.food-item-macro-header h6').forEach(macro => {
+        getMacros(macro);
+    });
+    document.querySelectorAll('.goal h4 span').forEach(macro => {
+        getMacros(macro);
     });
 };
+
+function getMacros(cntr) {
+    remainingContainer = {
+        carb: carbTotal,
+        protein: proteinTotal,
+        fat: fatTotal
+    };
+
+    let macroType = cntr.dataset;
+    for (const key in macroType) {
+        if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
+            updateFood(`data-${key}`, cntr);
+            let total = macroType[`${key}Total`];
+            
+            //if first food item added
+            if (total === undefined) {
+                updateFood(`data-${key}-total`, cntr, `${macroType[key]}`);
+                updateFood(`data-${key}-remaining`, cntr, `${reduceCal(remainingContainer[key], macroType[key])}`);
+                cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
+            } else {
+
+                updateFood(`data-${key}-total`, cntr, `${Number(macroType[key]) + Number(total) }`);
+                updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
+                //header content
+                cntr.textContent = `${reduceCal(remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
+            }
+        }
+    }
+}
 //function to reduce calories
 function reduceCal(v, amnt) {
     v = v - amnt;
@@ -468,7 +483,6 @@ function getFoods() {
         foods = JSON.parse(localStorage.getItem("foods"));
     }
     foods.forEach(function(food) {
-        console.log('hi');
         const foodItem = document.createElement('li');
         foodItem.innerHTML = `
         <div class="food">
@@ -488,9 +502,9 @@ function getFoods() {
         <button class="item-button" type="submit">
             <i class="fas fa-plus-square"></i>
         </button>
-    `;
-    foodList.appendChild(foodItem);
-    updateCalories();
+        `;
+        foodList.appendChild(foodItem);
+        updateCalories();
     });
 }
 //get foods from storage on load
