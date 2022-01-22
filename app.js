@@ -391,48 +391,27 @@ function updateCalories() {
         let macroType = macro.dataset;
         for (const key in macroType) {
             if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
-
                 updateFood(`data-${key}`, macro);
-                // reduce(remainingContainer[key], macroType[key]);
                 let total = macroType[`${key}Total`];
-                let remaining = macroType[`${key}Remaining`];
-                console.log(total);
-                console.log(typeof total);
                 
                 //if first food item added
                 if (total === undefined) {
                     updateFood(`data-${key}-total`, macro, `${macroType[key]}`);
-                    updateFood(`data-${key}-remaining`, macro, `${reduce(remainingContainer[key], macroType[key])}`);
+                    updateFood(`data-${key}-remaining`, macro, `${reduceCal(remainingContainer[key], macroType[key])}`);
+                    macro.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
                 } else {
                     console.log('in second')
                     updateFood(`data-${key}-total`, macro, `${Number(macroType[key]) + Number(total) }`);
                     updateFood(`data-${key}-remaining`, macro, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
+                    //header content
+                    macro.textContent = `${reduceCal(remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
                 }
-
-                console.log(remainingContainer[key]);
-                console.log(macro.dataset)
-                console.log(total);
-                console.log(typeof total);
-                console.log(macroType[`${key}Total`]);
-
-                //header content
-                macro.textContent = `${reduce(remainingContainer[key], macroType[key])}`;
             }
         }
     });
 };
-// console.log(Number(macroType[key]));
-
-// function updateObj(ob, data, va) {
-//     ob = {
-//          va
-//     }
-//     console.log(ob)
-// }
-
-// updateObj(remainingContainer, "carb", carbTotal);
-reduce(carbTotal, 10);
-function reduce(v, amnt) {
+//function to reduce calories
+function reduceCal(v, amnt) {
     v = v - amnt;
     return v
 }
