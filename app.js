@@ -196,7 +196,8 @@ weightInput.addEventListener('keypress', function(e) {
             remainingContainer = {
                 carb: carbTotal,
                 protein: proteinTotal,
-                fat: fatTotal
+                fat: fatTotal,
+                total: undefined
             };
         } else {
             alert("Please only enter integers. Only one decimal is allowed")
@@ -402,12 +403,16 @@ function getMacros(cntr) {
     remainingContainer = {
         carb: carbTotal,
         protein: proteinTotal,
-        fat: fatTotal
+        fat: fatTotal,
+        total: 1
     };
 
     let macroType = cntr.dataset;
     for (const key in macroType) {
         if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
+            console.log(cntr)
+            console.log(remainingContainer)
+            //update value of key
             updateFood(`data-${key}`, cntr);
             let total = macroType[`${key}Total`];
             
@@ -422,6 +427,11 @@ function getMacros(cntr) {
                 updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
                 //header content
                 cntr.textContent = `${reduceCal(remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
+            }
+
+            //display total
+            if (macroType['total']) {
+                cntr.textContent = `${remainingContainer[cntr.id]}`;
             }
         }
     }
