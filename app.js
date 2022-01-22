@@ -27,9 +27,9 @@ let weightValues = [];
 // let totalArray = [];
 // let [weightTotalPerDay, carbTotal, proteinTotal, fatTotal] = totalArray;
 let weightTotalPerDay;
-let carbTotal;
-let proteinTotal;
-let fatTotal;
+let carbTotal = 0;
+let proteinTotal = 0;
+let fatTotal = 0;
 let remainingContainer = {};
 
 // START EVENT LISTENERS
@@ -313,17 +313,20 @@ const foodInput = document.querySelector('#data-food');
 //save added food item into one
 
 //function to update weight value
-function updateFood(dataItem, cntr) {
+function updateFood(dataItem, cntr, value) {
     if (document.getElementById(dataItem)) {
         if (dataItem !== 'data-food') {
             if (regex.test(document.getElementById(dataItem).value)) {
                 cntr.setAttribute(`${dataItem}`, document.getElementById(dataItem).value);
+                // cntr.setAttribute(`${dataItem}-total`, document.getElementById(dataItem).value);
             } else {
                 alert('Please only input a valid integer to 2 decimal places.');
             }
         } else {
             cntr.setAttribute(`${dataItem}`, document.getElementById(dataItem).value);
         }
+    } else {    
+        cntr.setAttribute(`${dataItem}`, value);
     }
 };
 
@@ -377,31 +380,60 @@ foodInputForm.addEventListener('submit', addFood);
 function updateCalories() {
     const foodMacrosRemaining = document.querySelectorAll('.food-item-macro-header h6');
     foodMacrosRemaining.forEach(macro => {
+        remainingContainer = {
+            carb: carbTotal,
+            protein: proteinTotal,
+            fat: fatTotal
+        };
         // carbTotal
         // proteinTotal
         // fatTotal
         let macroType = macro.dataset;
         for (const key in macroType) {
-            if (macroType.hasOwnProperty(key)) {
-                //set value of data-attrib on header
-                remainingContainer = {
-                    carb: carbTotal,
-                    protein: proteinTotal,
-                    fat: fatTotal
-                };
-                console.log(macro.dataset);
-                console.log(remainingContainer)
-                console.log(carbTotal)
-                console.log(proteinTotal)
-                console.log(fatTotal)
-                console.log(remainingContainer['carb']);
-                console.log(key)
-                console.log(remainingContainer[key]);
+            if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
+
                 updateFood(`data-${key}`, macro);
-                // updateFood(`data-total`, macro);
-                macro.textContent = `${remainingContainer[key]}`;
+                // reduce(remainingContainer[key], macroType[key]);
+                let total = macroType[`${key}Total`];
+                let remaining = macroType[`${key}Remaining`];
+                console.log(total);
+                console.log(typeof total);
+                
+                //if first food item added
+                if (total === undefined) {
+                    updateFood(`data-${key}-total`, macro, `${macroType[key]}`);
+                    updateFood(`data-${key}-remaining`, macro, `${reduce(remainingContainer[key], macroType[key])}`);
+                } else {
+                    console.log('in second')
+                    updateFood(`data-${key}-total`, macro, `${Number(macroType[key]) + Number(total) }`);
+                    updateFood(`data-${key}-remaining`, macro, `${remainingContainer[key] - Number(total)}`);
+                }
+
+                console.log(remainingContainer[key]);
+                console.log(macro.dataset)
+                console.log(total);
+                console.log(typeof total);
+                console.log(macroType[`${key}Total`]);
+
+                //header content
+                macro.textContent = `${reduce(remainingContainer[key], macroType[key])}`;
             }
         }
     });
 };
 // console.log(Number(macroType[key]));
+
+// function updateObj(ob, data, va) {
+//     ob = {
+//          va
+//     }
+//     console.log(ob)
+// }
+
+// updateObj(remainingContainer, "carb", carbTotal);
+reduce(carbTotal, 10);
+function reduce(v, amnt) {
+    v = v - amnt;
+    return v
+}
+
