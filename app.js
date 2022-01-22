@@ -192,6 +192,7 @@ weightInput.addEventListener('keypress', function(e) {
             updateValue(e);
             
             weightValues.push(weightInfo);
+            //update values on new weight enter
             remainingContainer = {
                 carb: carbTotal,
                 protein: proteinTotal,
@@ -307,9 +308,7 @@ function showActive(e) {
 const formInputs = document.querySelectorAll('form input');
 const foodInputCntr = document.querySelector('.food-input-wrapper');
 const foodInput = document.querySelector('#data-food');
-// const foodCarb = document.querySelector('#data-carb');
-// const foodProtein = document.querySelector('#data-protein');
-// const foodFat = document.querySelector('#data-fat');
+
 //save added food item into one
 
 //function to update weight value
@@ -369,14 +368,18 @@ function addFood(e) {
     `;
     foodList.appendChild(foodItem);
     updateCalories();
+    //save food
+    saveLocalFoods(foodInputCntr.dataset.food, foodInputCntr.dataset.carb, foodInputCntr.dataset.protein, foodInputCntr.dataset.fat);
+    //clear inputs
     formInputs.forEach(input => {
         input.value = '';
     });
 }
+//listen to submission of new food
 foodInputForm.addEventListener('submit', addFood);
 
 
-//listen for update of calories
+//update of calories
 function updateCalories() {
     const foodMacrosRemaining = document.querySelectorAll('.food-item-macro-header h6');
     foodMacrosRemaining.forEach(macro => {
@@ -385,9 +388,7 @@ function updateCalories() {
             protein: proteinTotal,
             fat: fatTotal
         };
-        // carbTotal
-        // proteinTotal
-        // fatTotal
+
         let macroType = macro.dataset;
         for (const key in macroType) {
             if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
@@ -400,7 +401,7 @@ function updateCalories() {
                     updateFood(`data-${key}-remaining`, macro, `${reduceCal(remainingContainer[key], macroType[key])}`);
                     macro.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
                 } else {
-                    console.log('in second')
+
                     updateFood(`data-${key}-total`, macro, `${Number(macroType[key]) + Number(total) }`);
                     updateFood(`data-${key}-remaining`, macro, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
                     //header content
@@ -415,4 +416,87 @@ function reduceCal(v, amnt) {
     v = v - amnt;
     return v
 }
+
+//functions to save, remove and get items
+
+function saveLocalFoods(foodItem, carb, protein, fat) {
+    let food = {
+        food: foodItem,
+        carb: carb,
+        protein: protein,
+        fat: fat
+    };
+    let foods;
+    if (localStorage.getItem("foods") === null) {
+        foods = [];
+    } else {
+        foods = JSON.parse(localStorage.getItem("foods"));
+    }
+    foods.push(food);
+    localStorage.setItem("foods", JSON.stringify(foods));
+}
+
+function deleteFood(e) {
+    const item = e.target;
+    if (item.classList[0] === "item-button") {
+        const food = item.parentElement;
+        console.log(food)
+
+        removeLocalTodos(food);
+        food.remove();
+    }
+} 
+
+
+function removeLocalFoods(food) {
+    let foods;
+    if (localStorage.getItem("foods") === null) {
+        foods = [];
+    } else {
+        foods = JSON.parse(localStorage.getItem("foods"));
+    }
+    const foodIndex = food.children[0].innerText;
+    foods.splice(foods.indexOf(foodIndex), 1);
+    localStorage.setItem("foods", JSON.stringify(foods));
+}
+
+function getFoods() {
+    let foods;
+    if (localStorage.getItem("foods") === null) {
+      foods = [];
+    } else {
+        foods = JSON.parse(localStorage.getItem("foods"));
+    }
+    foods.forEach(function(food) {
+        console.log('hi');
+        const foodItem = document.createElement('li');
+        foodItem.innerHTML = `
+        <div class="food">
+            <p>${food.food}</p>
+        </div>
+        <div class="item-macro-cntr">
+            <div class="macro">
+            ${food.carb}
+            </div>
+            <div class="macro">
+            ${food.protein}
+            </div>
+            <div class="macro">
+            ${food.fat}
+            </div>
+        </div>
+        <button class="item-button" type="submit">
+            <i class="fas fa-plus-square"></i>
+        </button>
+    `;
+    foodList.appendChild(foodItem);
+    updateCalories();
+    });
+}
+//get foods from storage on load
+document.addEventListener("DOMContentLoaded", getFoods);
+console.log(JSON.parse(localStorage.getItem("foods")));
+
+//function to filter foods, delete
+
 
