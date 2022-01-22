@@ -24,8 +24,13 @@ percentFat.textContent = "0";
 const adjustOptions = document.querySelectorAll('.adjust-selection');
 
 let weightValues = [];
-let totalArray = [];
-let [weightTotalPerDay, carbTotal, proteinTotal, fatTotal] = totalArray;
+// let totalArray = [];
+// let [weightTotalPerDay, carbTotal, proteinTotal, fatTotal] = totalArray;
+let weightTotalPerDay;
+let carbTotal;
+let proteinTotal;
+let fatTotal;
+let remainingContainer = {};
 
 // START EVENT LISTENERS
 //listen for navigation
@@ -184,8 +189,14 @@ weightInput.addEventListener('keypress', function(e) {
                     }
                 }
             };
-            weightValues.push(weightInfo);
             updateValue(e);
+            
+            weightValues.push(weightInfo);
+            remainingContainer = {
+                carb: carbTotal,
+                protein: proteinTotal,
+                fat: fatTotal
+            };
         } else {
             alert("Please only enter integers. Only one decimal is allowed")
         }
@@ -296,9 +307,9 @@ function showActive(e) {
 const formInputs = document.querySelectorAll('form input');
 const foodInputCntr = document.querySelector('.food-input-wrapper');
 const foodInput = document.querySelector('#data-food');
-const foodCarb = document.querySelector('#data-carb');
-const foodProtein = document.querySelector('#data-protein');
-const foodFat = document.querySelector('#data-fat');
+// const foodCarb = document.querySelector('#data-carb');
+// const foodProtein = document.querySelector('#data-protein');
+// const foodFat = document.querySelector('#data-fat');
 //save added food item into one
 
 //function to update weight value
@@ -313,14 +324,12 @@ function updateFood(dataItem, cntr) {
         } else {
             cntr.setAttribute(`${dataItem}`, document.getElementById(dataItem).value);
         }
-        cntr.setAttribute(`${dataItem}`, document.getElementById(dataItem).value);
     }
 };
 
 //listen to weight input update
 formInputs.forEach(input => {
     let data = input.id;
-    console.log(input.id)
     input.addEventListener('input', function(e) {
         e.preventDefault();
         updateFood(data, foodInputCntr);
@@ -363,6 +372,7 @@ function addFood(e) {
 }
 foodInputForm.addEventListener('submit', addFood);
 
+
 //listen for update of calories
 function updateCalories() {
     const foodMacrosRemaining = document.querySelectorAll('.food-item-macro-header h6');
@@ -374,10 +384,24 @@ function updateCalories() {
         for (const key in macroType) {
             if (macroType.hasOwnProperty(key)) {
                 //set value of data-attrib on header
-                console.log(macro.dataset)
+                remainingContainer = {
+                    carb: carbTotal,
+                    protein: proteinTotal,
+                    fat: fatTotal
+                };
+                console.log(macro.dataset);
+                console.log(remainingContainer)
+                console.log(carbTotal)
+                console.log(proteinTotal)
+                console.log(fatTotal)
+                console.log(remainingContainer['carb']);
+                console.log(key)
+                console.log(remainingContainer[key]);
                 updateFood(`data-${key}`, macro);
-                macro.textContent = `${macroType[key]}`;
+                // updateFood(`data-total`, macro);
+                macro.textContent = `${remainingContainer[key]}`;
             }
         }
     });
 };
+// console.log(Number(macroType[key]));
