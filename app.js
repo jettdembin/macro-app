@@ -406,7 +406,7 @@ function updateCalories() {
                 } else {
                     console.log('in second')
                     updateFood(`data-${key}-total`, macro, `${Number(macroType[key]) + Number(total) }`);
-                    updateFood(`data-${key}-remaining`, macro, `${remainingContainer[key] - Number(total)}`);
+                    updateFood(`data-${key}-remaining`, macro, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
                 }
 
                 console.log(remainingContainer[key]);
