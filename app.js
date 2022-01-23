@@ -426,10 +426,8 @@ function callback(fn, type) {
 }
 function addOrReduce(e, val1, val2) {
     if (e.target.classList[0] === "item-button") {
-        console.log(e.target)
         return addBackCal(val1, val2)
     } else {
-        console.log(e.target)
         return reduceCal(val1, val2)
     }
 }
@@ -448,7 +446,6 @@ function getCall(e, cntr) {
     // goals.forEach(macro => {
         if (e.target.classList[0] === 'item-button') {
             deleteFood(e);
-            console.log("hi")
         }
         // let calc = function(num1, num2,callback) {
         //     return callback(num1, num2);
@@ -472,6 +469,7 @@ function getCall(e, cntr) {
                 
                 //if first food item added
                 if (total === undefined) {
+                    console.log('first');
                     updateFood(`data-${key}-total`, cntr, `${macroType[key]}`);
                     updateFood(`data-${key}-remaining`, cntr, `${reduceCal(remainingContainer[key], macroType[key])}`);
                     // updateFood(`data-${key}-remaining`, macro, `${addOrReduce(e.target.classList[0], remainingContainer[key], macroType[key])}`);
@@ -480,13 +478,25 @@ function getCall(e, cntr) {
                     // cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
                     cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
                 } else {
-    
+                    console.log('second');
                     updateFood(`data-${key}-total`, cntr, `${Number(macroType[key]) + Number(total) }`);
-                    updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
+                    // updateFood(`data-${key}-total`, cntr, `${addOrReduce(e, Number(macroType[key]), Number(total))}`);
+                    // updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
+                    updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, Number(total), Number(macroType[key])))}`);
+                    console.log(addOrReduce(e, Number(total), Number(macroType[key])));
+                    console.log(cntr.dataset)
                     //header content
-                    cntr.textContent = `${addOrReduce(e, remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
+                    cntr.textContent = `${remainingContainer[key] - (addOrReduce(e, Number(total), Number(macroType[key])))}`;
                 }
-    
+                // const remain = `
+                //     ${( => {
+                //     if (title) {
+                //         return `<h2>${title}</h2>`;
+                //     }
+                //         return '<h2>Nothing 3</h2>';
+                //         })(object.title)
+                //     }
+                // `;
                 //display total
                 if (macroType['total']) {
                     cntr.textContent = `${remainingContainer[cntr.id]}`;
