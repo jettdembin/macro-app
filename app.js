@@ -192,12 +192,13 @@ weightInput.addEventListener('keypress', function(e) {
             updateValue(e);
             
             weightValues.push(weightInfo);
+            console.log(weightValues)
             //update values on new weight enter
             remainingContainer = {
                 carb: carbTotal,
                 protein: proteinTotal,
                 fat: fatTotal,
-                total: undefined
+                total: 0
             };
         } else {
             alert("Please only enter integers. Only one decimal is allowed")
@@ -241,6 +242,8 @@ function displayCal(e) {
     if (e.target.id === 'cut') {
         weightValues[0].cut.values();
         displayHeader(e.target.id);
+        //show log item total macros
+        updateCalories();
 
         percentCarb.textContent = 40;
         percentProtein.textContent = 40;
@@ -249,6 +252,8 @@ function displayCal(e) {
     if (e.target.id === 'maintain') {
         weightValues[0].maintain.values();
         displayHeader(e.target.id);
+        //show log item total macros
+        updateCalories();
         
         percentCarb.textContent = 50;
         percentProtein.textContent = 20;
@@ -257,6 +262,8 @@ function displayCal(e) {
     if (e.target.id === 'bulk') {
         weightValues[0].bulk.values();
         displayHeader(e.target.id);
+        //show log item total macros
+        updateCalories();
 
         percentCarb.textContent = 50;
         percentProtein.textContent = 15;
@@ -317,7 +324,8 @@ const foodInput = document.querySelector('#data-food');
 function updateFood(dataItem, cntr, value) {
     if (document.getElementById(dataItem)) {
         if (dataItem !== 'data-food') {
-            if (regex.test(document.getElementById(dataItem).value)) {
+            if (regex.test(1)) {
+                // (regex.test(document.getElementById(dataItem).value))
                 cntr.setAttribute(`${dataItem}`, document.getElementById(dataItem).value);
                 // cntr.setAttribute(`${dataItem}-total`, document.getElementById(dataItem).value);
             } else {
@@ -343,7 +351,8 @@ formInputs.forEach(input => {
 const foodList = document.querySelector('.food-list');
 const foodInputForm = document.querySelector('.food-input-cntr');
 
-//listen for addition of food
+//listen for addition of food and deletion
+foodList.addEventListener('click',deleteFood);
 foodInputForm.addEventListener('submit',addFood);
 
 function addFood(e) {
@@ -377,17 +386,6 @@ function addFood(e) {
         input.value = '';
     });
 }
-//listen to submission of new food
-foodInputForm.addEventListener('submit', addFood);
-
-// const displayMacros = document.querySelectorAll('.goal h4 span');
-
-//funciton to display total macros for each
-// function displayMacro() {
-//     for (const macro of displayMacros) {
-        
-//     }
-// };
 
 //update of calories
 function updateCalories() {
@@ -463,12 +461,12 @@ function saveLocalFoods(foodItem, carb, protein, fat) {
 }
 
 function deleteFood(e) {
+    console.log(e.target);
     const item = e.target;
     if (item.classList[0] === "item-button") {
         const food = item.parentElement;
-        console.log(food)
 
-        removeLocalTodos(food);
+        removeLocalFoods(food);
         food.remove();
     }
 } 
@@ -515,13 +513,12 @@ function getFoods() {
         </button>
         `;
         foodList.appendChild(foodItem);
-        updateCalories();
+        // updateCalories();
     });
 }
 //get foods from storage on load
 document.addEventListener("DOMContentLoaded", getFoods);
-console.log(JSON.parse(localStorage.getItem("foods")));
+// console.log(JSON.parse(localStorage.getItem("foods")));
 
-//function to filter foods, delete
 
 
