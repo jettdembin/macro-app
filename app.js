@@ -192,7 +192,6 @@ weightInput.addEventListener('keypress', function(e) {
             updateValue(e);
             
             weightValues.push(weightInfo);
-            console.log(weightValues)
             //update values on new weight enter
             remainingContainer = {
                 carb: carbTotal,
@@ -390,12 +389,11 @@ function addFood(e) {
 //update of calories
 function updateCalories(e) {
     document.querySelectorAll('.food-item-macro-header h6').forEach(macro => {
-        getMacros(macro);
+        getCall(e, macro);
     });
-    document.querySelectorAll('.goal h4 span').forEach(macro => {
-        getMacros(macro);
-    });
-    deleteFood(e);
+     document.querySelectorAll('.goal h4 span').forEach(macro => {
+        getCall(e, macro);
+     });
     // const item = e.target;
     // if (item.classList[0] === "item-button") {
     //     const food = item.parentElement;
@@ -416,56 +414,27 @@ function updateCalories(e) {
 
 
 function deleteFood(e) {
-    console.log(e.target);
     const item = e.target;
-    if (item.classList[0] === "item-button") {
-        const food = item.parentElement;
+    const food = item.parentElement;
 
-        removeLocalFoods(food);
-        food.remove();
-    }
+    removeLocalFoods(food);
+    food.remove();
 } 
 
-function getMacros(cntr) {
-    remainingContainer = {
-        carb: carbTotal,
-        protein: proteinTotal,
-        fat: fatTotal,
-        total: 1
-    };
-
-    let macroType = cntr.dataset;
-    for (const key in macroType) {
-        if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
-            console.log(cntr)
-            console.log(remainingContainer)
-            //update value of key
-            updateFood(`data-${key}`, cntr);
-            let total = macroType[`${key}Total`];
-            
-            //if first food item added
-            if (total === undefined) {
-                updateFood(`data-${key}-total`, cntr, `${macroType[key]}`);
-                updateFood(`data-${key}-remaining`, cntr, `${reduceCal(remainingContainer[key], macroType[key])}`);
-                // cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
-                cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
-            } else {
-
-                updateFood(`data-${key}-total`, cntr, `${Number(macroType[key]) + Number(total) }`);
-                updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
-                //header content
-                cntr.textContent = `${reduceCal(remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
-            }
-
-            //display total
-            if (macroType['total']) {
-                cntr.textContent = `${remainingContainer[cntr.id]}`;
-            }
-        }
+function callback(fn, type) {
+    fn(type);
+}
+function addOrReduce(type, val1, val2) {
+    if (type === "item-button") {
+        console.log(type)
+        return reduceCal(val1, val2)
+    } else {
+        console.log(type)
+        return addBackCal(val1, val2)
     }
 }
 //function to reduce calories
-function reduceCal(v, amnt) {
+function reduceCal(v, amnt) {  
     v = v - amnt;
     return v
 }
@@ -474,6 +443,105 @@ function addBackCal(v, amnt) {
     v = v + amnt;
     return v
 }
+function getCall(e, cntr) {
+    // const goals = document.querySelectorAll('.goal h4 span');
+    // goals.forEach(macro => {
+        if (e.target.classList[0] === 'item-button') {
+            deleteFood(e);
+        }
+        // let calc = function(num1, num2,callback) {
+        //     return callback(num1, num2);
+        // }
+        // let calc = function(num1, num2, callback) {
+        //     return callback(num1, num2)
+        // }
+        remainingContainer = {
+            carb: carbTotal,
+            protein: proteinTotal,
+            fat: fatTotal,
+            total: 1
+        };
+    
+        let macroType = cntr.dataset;
+        for (const key in macroType) {
+            if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
+                //update value of key
+                updateFood(`data-${key}`, cntr);
+                let total = macroType[`${key}Total`];
+                
+                //if first food item added
+                if (total === undefined) {
+                    updateFood(`data-${key}-total`, cntr, `${macroType[key]}`);
+                    updateFood(`data-${key}-remaining`, cntr, `${reduceCal(remainingContainer[key], macroType[key])}`);
+                    // updateFood(`data-${key}-remaining`, macro, `${addOrReduce(e.target.classList[0], remainingContainer[key], macroType[key])}`);
+                    console.log(cntr.dataset)
+                    // updateFood(`data-${key}-remaining`, cntr, `${calc(reduceCal(remainingContainer[key], macroType[key]))}`);
+                    // cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
+                    cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
+                } else {
+    
+                    updateFood(`data-${key}-total`, cntr, `${Number(macroType[key]) + Number(total) }`);
+                    updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
+                    //header content
+                    cntr.textContent = `${reduceCal(remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
+                }
+    
+                //display total
+                if (macroType['total']) {
+                    cntr.textContent = `${remainingContainer[cntr.id]}`;
+                }
+            }
+        }
+    // });
+}
+
+// function getMacros(cntr) {
+//     let calc = function(num1, num2,callback) {
+//         return callback(num1, num2);
+//     }
+//     // let calc = function(num1, num2, callback) {
+//     //     return callback(num1, num2)
+//     // }
+//     remainingContainer = {
+//         carb: carbTotal,
+//         protein: proteinTotal,
+//         fat: fatTotal,
+//         total: 1
+//     };
+
+//     let macroType = cntr.dataset;
+//     for (const key in macroType) {
+//         if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
+//             console.log(cntr)
+//             console.log(remainingContainer)
+//             //update value of key
+//             updateFood(`data-${key}`, cntr);
+//             let total = macroType[`${key}Total`];
+            
+//             //if first food item added
+//             if (total === undefined) {
+//                 updateFood(`data-${key}-total`, cntr, `${macroType[key]}`);
+//                 updateFood(`data-${key}-remaining`, cntr, `${
+//                     calc(remainingContainer[key], macroType[key], reduceCal)
+//                 }`);
+//                 // updateFood(`data-${key}-remaining`, cntr, `${calc(reduceCal(remainingContainer[key], macroType[key]))}`);
+//                 // cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
+//                 cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
+//             } else {
+
+//                 updateFood(`data-${key}-total`, cntr, `${Number(macroType[key]) + Number(total) }`);
+//                 updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
+//                 //header content
+//                 cntr.textContent = `${reduceCal(remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
+//             }
+
+//             //display total
+//             if (macroType['total']) {
+//                 cntr.textContent = `${remainingContainer[cntr.id]}`;
+//             }
+//         }
+//     }
+// }
 
 //functions to save, remove and get items
 
