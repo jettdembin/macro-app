@@ -418,8 +418,9 @@ function getMacros(cntr) {
             
             //if first food item added
             if (total === undefined) {
-                updateFood(`data-${key}-total`, cntr, `${macroType[key]}`);
-                updateFood(`data-${key}-remaining`, cntr, `${reduceCal(remainingContainer[key], macroType[key])}`);
+                // updateFood(`data-${key}-total`, cntr, `${macroType[key]}`);
+                // updateFood(`data-${key}-remaining`, cntr, `${reduceCal(remainingContainer[key], macroType[key])}`);
+                // cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
                 cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
             } else {
 
