@@ -426,9 +426,11 @@ function callback(fn, type) {
 }
 function addOrReduce(e, val1, val2) {
     if (e.target.classList[0] === "item-button") {
-        return addBackCal(val1, val2)
-    } else {
+        // return addBackCal(val1, val2)
         return reduceCal(val1, val2)
+    } else {
+        // return reduceCal(val1, val2)
+        return addBackCal(val1, val2)
     }
 }
 //function to reduce calories
@@ -479,24 +481,19 @@ function getCall(e, cntr) {
                     cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
                 } else {
                     console.log('second');
-                    updateFood(`data-${key}-total`, cntr, `${Number(macroType[key]) + Number(total) }`);
+                    updateFood(`data-${key}-total`, cntr, `${Number(total) + Number(macroType[key]) }`);
+                    // updateFood(`data-${key}-total`, cntr, `${Number(macroType[key]) + Number(total) }`);
                     // updateFood(`data-${key}-total`, cntr, `${addOrReduce(e, Number(macroType[key]), Number(total))}`);
                     // updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
                     updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, Number(total), Number(macroType[key])))}`);
                     console.log(addOrReduce(e, Number(total), Number(macroType[key])));
+                    console.log(addOrReduce(e, (Number(total) + Number(macroType[key])), Number(macroType[key])));
                     console.log(cntr.dataset)
                     //header content
                     cntr.textContent = `${remainingContainer[key] - (addOrReduce(e, Number(total), Number(macroType[key])))}`;
                 }
-                // const remain = `
-                //     ${( => {
-                //     if (title) {
-                //         return `<h2>${title}</h2>`;
-                //     }
-                //         return '<h2>Nothing 3</h2>';
-                //         })(object.title)
-                //     }
-                // `;
+                //Number(total) is previous total number
+                
                 //display total
                 if (macroType['total']) {
                     cntr.textContent = `${remainingContainer[cntr.id]}`;
