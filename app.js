@@ -243,7 +243,7 @@ function displayCal(e) {
         weightValues[0].cut.values();
         displayHeader(e.target.id);
         //show log item total macros
-        updateCalories();
+        updateCalories(e);
 
         percentCarb.textContent = 40;
         percentProtein.textContent = 40;
@@ -253,7 +253,7 @@ function displayCal(e) {
         weightValues[0].maintain.values();
         displayHeader(e.target.id);
         //show log item total macros
-        updateCalories();
+        updateCalories(e);
         
         percentCarb.textContent = 50;
         percentProtein.textContent = 20;
@@ -263,7 +263,7 @@ function displayCal(e) {
         weightValues[0].bulk.values();
         displayHeader(e.target.id);
         //show log item total macros
-        updateCalories();
+        updateCalories(e);
 
         percentCarb.textContent = 50;
         percentProtein.textContent = 15;
@@ -352,7 +352,7 @@ const foodList = document.querySelector('.food-list');
 const foodInputForm = document.querySelector('.food-input-cntr');
 
 //listen for addition of food and deletion
-foodList.addEventListener('click',deleteFood);
+foodList.addEventListener('click',updateCalories);
 foodInputForm.addEventListener('submit',addFood);
 
 function addFood(e) {
@@ -378,7 +378,7 @@ function addFood(e) {
         </button>
     `;
     foodList.appendChild(foodItem);
-    updateCalories();
+    updateCalories(e);
     //save food
     saveLocalFoods(foodInputCntr.dataset.food, foodInputCntr.dataset.carb, foodInputCntr.dataset.protein, foodInputCntr.dataset.fat);
     //clear inputs
@@ -388,14 +388,43 @@ function addFood(e) {
 }
 
 //update of calories
-function updateCalories() {
+function updateCalories(e) {
     document.querySelectorAll('.food-item-macro-header h6').forEach(macro => {
         getMacros(macro);
     });
     document.querySelectorAll('.goal h4 span').forEach(macro => {
         getMacros(macro);
     });
+    deleteFood(e);
+    // const item = e.target;
+    // if (item.classList[0] === "item-button") {
+    //     const food = item.parentElement;
+
+    //     removeLocalFoods(food);
+    //     food.remove();
+    //     document.querySelectorAll('.goal h4 span').forEach(macro => {
+    //         getMacros(macro, e.target.classList[0]);
+    //     });
+    // }
 };
+
+// function getMacros(cntr, type) {
+//     if (type === "item-button") {
+
+//     }
+// }
+
+
+function deleteFood(e) {
+    console.log(e.target);
+    const item = e.target;
+    if (item.classList[0] === "item-button") {
+        const food = item.parentElement;
+
+        removeLocalFoods(food);
+        food.remove();
+    }
+} 
 
 function getMacros(cntr) {
     remainingContainer = {
@@ -441,6 +470,11 @@ function reduceCal(v, amnt) {
     return v
 }
 
+function addBackCal(v, amnt) {
+    v = v + amnt;
+    return v
+}
+
 //functions to save, remove and get items
 
 function saveLocalFoods(foodItem, carb, protein, fat) {
@@ -459,18 +493,6 @@ function saveLocalFoods(foodItem, carb, protein, fat) {
     foods.push(food);
     localStorage.setItem("foods", JSON.stringify(foods));
 }
-
-function deleteFood(e) {
-    console.log(e.target);
-    const item = e.target;
-    if (item.classList[0] === "item-button") {
-        const food = item.parentElement;
-
-        removeLocalFoods(food);
-        food.remove();
-        // updateCalories();
-    }
-} 
 
 
 function removeLocalFoods(food) {
