@@ -424,13 +424,13 @@ function deleteFood(e) {
 function callback(fn, type) {
     fn(type);
 }
-function addOrReduce(type, val1, val2) {
-    if (type === "item-button") {
-        console.log(type)
-        return reduceCal(val1, val2)
-    } else {
-        console.log(type)
+function addOrReduce(e, val1, val2) {
+    if (e.target.classList[0] === "item-button") {
+        console.log(e.target)
         return addBackCal(val1, val2)
+    } else {
+        console.log(e.target)
+        return reduceCal(val1, val2)
     }
 }
 //function to reduce calories
@@ -448,6 +448,7 @@ function getCall(e, cntr) {
     // goals.forEach(macro => {
         if (e.target.classList[0] === 'item-button') {
             deleteFood(e);
+            console.log("hi")
         }
         // let calc = function(num1, num2,callback) {
         //     return callback(num1, num2);
@@ -483,7 +484,7 @@ function getCall(e, cntr) {
                     updateFood(`data-${key}-total`, cntr, `${Number(macroType[key]) + Number(total) }`);
                     updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
                     //header content
-                    cntr.textContent = `${reduceCal(remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
+                    cntr.textContent = `${addOrReduce(e, remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
                 }
     
                 //display total
