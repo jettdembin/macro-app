@@ -353,6 +353,21 @@ const foodInputForm = document.querySelector('.food-input-cntr');
 //listen for addition of food and deletion
 foodList.addEventListener('click',updateCalories);
 foodInputForm.addEventListener('submit',addFood);
+//retain all foods added by user
+const foodsAdded = [];
+
+//create object to push into foodsAdded array;
+function returnFood(item, carb, protein, fat) {
+    let foodValues = {
+        id: Math.floor(Math.random() * 10000),
+        food: item,
+        carb: Number(carb),
+        protein: Number(protein),
+        fat: Number(fat),
+        total: (Number(carb) + Number(protein) + Number(fat))
+    }; 
+    return foodValues
+}
 
 function addFood(e) {
     e.preventDefault();
@@ -377,6 +392,9 @@ function addFood(e) {
         </button>
     `;
     foodList.appendChild(foodItem);
+    //add food to array of foods added
+    foodsAdded.push(returnFood(foodInputCntr.dataset.food, foodInputCntr.dataset.carb, foodInputCntr.dataset.protein, foodInputCntr.dataset.fat));
+    console.log(foodsAdded);
     updateCalories(e);
     //save food
     saveLocalFoods(foodInputCntr.dataset.food, foodInputCntr.dataset.carb, foodInputCntr.dataset.protein, foodInputCntr.dataset.fat);
@@ -394,24 +412,7 @@ function updateCalories(e) {
      document.querySelectorAll('.goal h4 span').forEach(macro => {
         getCall(e, macro);
      });
-    // const item = e.target;
-    // if (item.classList[0] === "item-button") {
-    //     const food = item.parentElement;
-
-    //     removeLocalFoods(food);
-    //     food.remove();
-    //     document.querySelectorAll('.goal h4 span').forEach(macro => {
-    //         getMacros(macro, e.target.classList[0]);
-    //     });
-    // }
 };
-
-// function getMacros(cntr, type) {
-//     if (type === "item-button") {
-
-//     }
-// }
-
 
 function deleteFood(e) {
     const item = e.target;
@@ -420,27 +421,39 @@ function deleteFood(e) {
     removeLocalFoods(food);
     food.remove();
 } 
-
-function callback(fn, type) {
-    fn(type);
+let decide = function(e, val1, val2) {
+    if (e.target.classList[0] === "item-button") {
+        deleteFood(e);
+        // console.log('reduceCal')
+        // console.log(reduceCal(val1, val2))
+        // console.log('reduceCal')
+        console.log('reduceCal')
+        console.log(val1, "val 1")
+        console.log(val2, "val 2")
+        return val1 - val2
+    } else {
+        // console.log('addBackCal')
+        // console.log(addBackCal(val1, val2))
+        val1 + val2
+        console.log(val1)
+        return val1
+    }
 }
-function addOrReduce(e, val1, val2,) {
-    const decide = () => {
+
+function addOrReduce(e, val1, val2, callback) {
+    if (callback) {
+        return callback(e, val1, val2);
+    } else {
         if (e.target.classList[0] === "item-button") {
+            console.log('reduce')
             return reduceCal(val1, val2)
         } else {
+            console.log('add')
             return addBackCal(val1, val2)
         }
     }
-    decide();
-    // if (e.target.classList[0] === "item-button") {
-    //     // return addBackCal(val1, val2)
-    //     return reduceCal(val1, val2)
-    // } else {
-    //     // return reduceCal(val1, val2)
-    //     return addBackCal(val1, val2)
-    // }
 }
+
 //function to reduce calories
 function reduceCal(v, amnt) {  
     v = v - amnt;
@@ -454,14 +467,8 @@ function addBackCal(v, amnt) {
 function getCall(e, cntr) {
     // const goals = document.querySelectorAll('.goal h4 span');
     // goals.forEach(macro => {
-        if (e.target.classList[0] === 'item-button') {
-            deleteFood(e);
-        }
-        // let calc = function(num1, num2,callback) {
-        //     return callback(num1, num2);
-        // }
-        // let calc = function(num1, num2, callback) {
-        //     return callback(num1, num2)
+        // if (e.target.classList[0] === 'item-button') {
+        //     deleteFood(e);
         // }
         remainingContainer = {
             carb: carbTotal,
@@ -473,9 +480,12 @@ function getCall(e, cntr) {
         let macroType = cntr.dataset;
         for (const key in macroType) {
             if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
-                let totalNow = [];
+                let totalNow = 0;
+                let macroAmnt = 0;
                 //update value of key
-                updateFood(`data-${key}`, cntr);
+                if (e.target.classList[0] !== 'item-button') {
+                    updateFood(`data-${key}`, cntr);
+                }
                 let total = macroType[`${key}Total`];
                 
                 //if first food item added
@@ -483,29 +493,27 @@ function getCall(e, cntr) {
                     console.log('first');
                     updateFood(`data-${key}-total`, cntr, `${macroType[key]}`);
                     updateFood(`data-${key}-remaining`, cntr, `${reduceCal(remainingContainer[key], macroType[key])}`);
-                    // updateFood(`data-${key}-remaining`, macro, `${addOrReduce(e.target.classList[0], remainingContainer[key], macroType[key])}`);
                     console.log(cntr.dataset)
-                    // updateFood(`data-${key}-remaining`, cntr, `${calc(reduceCal(remainingContainer[key], macroType[key]))}`);
-                    // cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
                     cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
                 } else {
                     console.log('second');
-                    updateFood(`data-${key}-total`, cntr, `${Number(total) + Number(macroType[key]) }`);
-                    totalNow.pop();
-                    totalNow.push(Number(total) + Number(macroType[key]));
-                    console.log(totalNow);
-                    // updateFood(`data-${key}-total`, cntr, `${Number(macroType[key]) + Number(total) }`);
-                    // updateFood(`data-${key}-total`, cntr, `${addOrReduce(e, Number(macroType[key]), Number(total))}`);
-                    // updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
-                    // updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, Number(total), Number(macroType[key])))}`);
-                    updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, Number(total), Number(macroType[key])))}`);
-
-
-                    console.log(addOrReduce(e, Number(total), Number(macroType[key])));
-                    console.log(addOrReduce(e, (Number(total) + Number(macroType[key])), Number(macroType[key])));
-                    console.log(cntr.dataset)
+                    console.log(e.target);
+                    //change htmlCollection to array
+                    let arr = [...e.target.previousElementSibling.children];
+                    macroAmnt = `${e.target.classList[0] ==='item-button' ?  arr.filter(child => {
+                        if (child.dataset.hasOwnProperty(key)) {
+                            return Number(macroType[key])
+                        }
+                    }) : Number(macroType[key])}`;
+                    totalNow = `${e.target.classList[0] ==='item-button' ? Number(total) - Number(macroType[key]) : Number(total) + Number(macroType[key])}`;
+                    updateFood(`data-${key}-total`, cntr, totalNow);
+                    updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, totalNow , macroAmnt, decide))}`);
+                    // updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, Number(total), Number(macroType[key])))}`); // works for setting remaining on addition of items
+                    // console.log(addOrReduce(e, Number(total), Number(macroType[key])));
+                    // console.log(addOrReduce(e, (Number(total) + Number(macroType[key])), Number(macroType[key]))); //total for next iteration on new tem submission (this works for deleting items and having the total fixed)
+                    console.log(cntr.dataset);
                     //header content
-                    cntr.textContent = `${remainingContainer[key] - (addOrReduce(e, decide, Number(macroType[key])))}`;
+                    cntr.textContent = `${remainingContainer[key] - (addOrReduce(e, totalNow , macroAmnt, decide))}`; // this works for adding new items
                 }
                 //Number(total) is previous total number
                 
@@ -517,7 +525,6 @@ function getCall(e, cntr) {
         }
     // });
 }
-
 // function getMacros(cntr) {
 //     let calc = function(num1, num2,callback) {
 //         return callback(num1, num2);
