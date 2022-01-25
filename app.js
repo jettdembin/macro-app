@@ -358,8 +358,9 @@ const foodsAdded = [];
 
 //create object to push into foodsAdded array;
 function returnFood(item, carb, protein, fat) {
+    let idVal = Math.floor(Math.random() * 10000);
     let foodValues = {
-        id: Math.floor(Math.random() * 10000),
+        id: idVal,
         food: item,
         carb: Number(carb),
         protein: Number(protein),
@@ -377,13 +378,13 @@ function addFood(e) {
             <p>${foodInputCntr.dataset.food}</p>
         </div>
         <div class="item-macro-cntr">
-            <div class="macro">
+            <div class="macro" data-carb>
             ${foodInputCntr.dataset.carb}
             </div>
-            <div class="macro">
+            <div class="macro" data-protein>
             ${foodInputCntr.dataset.protein}
             </div>
-            <div class="macro">
+            <div class="macro" data-fat>
             ${foodInputCntr.dataset.fat}
             </div>
         </div>
@@ -454,6 +455,14 @@ function addOrReduce(e, val1, val2, callback) {
     }
 }
 
+//function to recieve prevTotal 
+function prevTotal(key) {
+    document.querySelectorAll('.food-item-macro-header h6').forEach(cntr => {
+        let total = cntr.dataset[`${key}Total`]
+        return total
+    })
+}
+
 //function to reduce calories
 function reduceCal(v, amnt) {  
     v = v - amnt;
@@ -464,6 +473,7 @@ function addBackCal(v, amnt) {
     v = v + amnt;
     return v
 }
+let macroTotals = [];
 function getCall(e, cntr) {
     // const goals = document.querySelectorAll('.goal h4 span');
     // goals.forEach(macro => {
@@ -481,11 +491,22 @@ function getCall(e, cntr) {
         for (const key in macroType) {
             if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
                 let totalNow = 0;
+                let prevTotal = 0;
                 let macroAmnt = 0;
                 //update value of key
                 if (e.target.classList[0] !== 'item-button') {
                     updateFood(`data-${key}`, cntr);
                 }
+                // } else {
+                //     let arr = [...e.target.previousElementSibling.children];
+                //     arr.forEach(child => {
+                //         if (child.dataset.hasOwnProperty(key)) {
+                //             console.log(Number(child.textContent))
+                //             updateFood(`data-${key}`, child, Number(child.textContent))
+                //             console.log(child.dataset[key] , key)
+                //         }
+                //     })
+                // }
                 let total = macroType[`${key}Total`];
                 
                 //if first food item added
@@ -497,23 +518,44 @@ function getCall(e, cntr) {
                     cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
                 } else {
                     console.log('second');
-                    console.log(e.target);
-                    //change htmlCollection to array
+
                     let arr = [...e.target.previousElementSibling.children];
-                    macroAmnt = `${e.target.classList[0] ==='item-button' ?  arr.filter(child => {
+                    let prevTotalArr =  document.querySelectorAll('.food-item-macro-header h6');
+                    
+                    // macroAmnt = Number(`${e.target.classList[0] ==='item-button' ? Number(macroType[key]) : Number(macroType[key])}`);
+                    // totalNow = Number(`${e.target.classList[0] ==='item-button' ? Number(total) - Number(macroType[key]) : Number(total) + Number(macroType[key])}`);
+                    // prevTotalArr.forEach(cntr => {
+                    //     let total = cntr.dataset[`${cntr.}Total`]
+                    //     return total
+                    // })
+                    arr.forEach(child => {
                         if (child.dataset.hasOwnProperty(key)) {
-                            return Number(macroType[key])
+                            console.log(typeof(Number(child.textContent)), key)
+                            return Number(child.textContent)
                         }
-                    }) : Number(macroType[key])}`;
-                    totalNow = `${e.target.classList[0] ==='item-button' ? Number(total) - Number(macroType[key]) : Number(total) + Number(macroType[key])}`;
+                    })
+                    totalNow = Number(`${e.target.classList[0] ==='item-button' ? 2 - 2 : Number(total) + Number(macroType[key])}`);
                     updateFood(`data-${key}-total`, cntr, totalNow);
-                    updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, totalNow , macroAmnt, decide))}`);
+
+                    prevTotal = Number(total) + Number(macroType[key]);
+                    let macroTotalVal = [key, prevTotal];
+                    if (macroTotals.length < 6) {
+                        macroTotals.push(macroTotalVal)
+                    } else {
+                        macroTotals.splice(0,6)
+                        macroTotals.push(macroTotalVal)
+                    }
+                    console.log(macroTotals);
+
+                    updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - totalNow}`);
+                    // updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, totalNow , macroAmnt, decide))}`);
                     // updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, Number(total), Number(macroType[key])))}`); // works for setting remaining on addition of items
                     // console.log(addOrReduce(e, Number(total), Number(macroType[key])));
                     // console.log(addOrReduce(e, (Number(total) + Number(macroType[key])), Number(macroType[key]))); //total for next iteration on new tem submission (this works for deleting items and having the total fixed)
                     console.log(cntr.dataset);
                     //header content
-                    cntr.textContent = `${remainingContainer[key] - (addOrReduce(e, totalNow , macroAmnt, decide))}`; // this works for adding new items
+                    console.log(remainingContainer[key] - totalNow)
+                    cntr.textContent = `${remainingContainer[key] - totalNow}`; // this works for adding new items
                 }
                 //Number(total) is previous total number
                 
