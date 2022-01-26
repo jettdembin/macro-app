@@ -412,6 +412,9 @@ function addFood(e) {
 
 //update of calories
 function updateCalories(e) {
+    if (e.target.classList[0] === 'item-button') {
+        deleteFood(e);
+    }
     document.querySelectorAll('.food-item-macro-header h6').forEach(macro => {
         getCall(e, macro);
     });
@@ -471,9 +474,6 @@ function getCall(e, cntr) {
             fat: fatTotal,
             total: 1
         };
-        if (e.target.classList[0] !== 'item-button') {
-            deleteFood(e);
-        }
     
         let macroType = cntr.dataset;
         for (const key in macroType) {
