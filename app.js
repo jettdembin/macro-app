@@ -399,10 +399,11 @@ function addFood(e) {
     foodList.appendChild(foodItem);
     //add food to array of foods added
     foodsAdded.push(returnFood(foodInputCntr.dataset.food, foodInputCntr.dataset.carb, foodInputCntr.dataset.protein, foodInputCntr.dataset.fat));
-    console.log(foodsAdded);
     updateCalories(e);
     //save food
     saveLocalFoods(foodInputCntr.dataset.food, foodInputCntr.dataset.carb, foodInputCntr.dataset.protein, foodInputCntr.dataset.fat);
+    // //init remain amnt
+    saveRemaining();
     //clear inputs
     formInputs.forEach(input => {
         input.value = '';
@@ -429,16 +430,8 @@ function deleteFood(e) {
 // let decide = function(e, val1, val2) {
 //     if (e.target.classList[0] === "item-button") {
 //         deleteFood(e);
-//         // console.log('reduceCal')
-//         // console.log(reduceCal(val1, val2))
-//         // console.log('reduceCal')
-//         console.log('reduceCal')
-//         console.log(val1, "val 1")
-//         console.log(val2, "val 2")
 //         return val1 - val2
 //     } else {
-//         // console.log('addBackCal')
-//         // console.log(addBackCal(val1, val2))
 //         val1 + val2
 //         console.log(val1)
 //         return val1
@@ -478,6 +471,9 @@ function getCall(e, cntr) {
             fat: fatTotal,
             total: 1
         };
+        if (e.target.classList[0] !== 'item-button') {
+            deleteFood(e);
+        }
     
         let macroType = cntr.dataset;
         for (const key in macroType) {
@@ -487,8 +483,6 @@ function getCall(e, cntr) {
                 //update value of key
                 if (e.target.classList[0] !== 'item-button') {
                     updateFood(`data-${key}`, cntr);
-                } else {
-                    deleteFood(e);
                 }
                
                 let total = macroType[`${key}Total`];
@@ -498,7 +492,7 @@ function getCall(e, cntr) {
                     console.log('first');
                     updateFood(`data-${key}-total`, cntr, `${macroType[key]}`);
                     updateFood(`data-${key}-remaining`, cntr, `${reduceCal(remainingContainer[key], macroType[key])}`);
-                    console.log(cntr.dataset)
+
                     cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
                 } else {
                     console.log('second');
@@ -512,7 +506,7 @@ function getCall(e, cntr) {
                             if (child.dataset.hasOwnProperty(key)) {
                                 num = Number(child.textContent)
                             }
-                            console.log(num, typeof num)
+
                         })
                         return num
                     }
@@ -527,8 +521,11 @@ function getCall(e, cntr) {
 
                     //header content
                     cntr.textContent = `${remainingContainer[key] - totalNow}`; // this works for adding new items
+
+                    //save remaining amount
+                    saveRemaining((remainingContainer[key] - totalNow), key);
                 }
-                //Number(total) is previous total number
+                //Number(total) is previous total numberm
                 
                 //display total
                 if (macroType['total']) {
@@ -539,6 +536,38 @@ function getCall(e, cntr) {
 }
 
 //functions to save, remove and get items
+//save remaing amount
+function saveRemaining(total,key) {
+    console.log(total, key, "save")
+    total;
+    // total = Number(`${e.target.classList[0] ==='item-button' ? Number(total) - currentVal : Number(total) + Number(currentVal)}`);
+    let remaining = {
+        carb:undefined,
+        protein:undefined,
+        fat:undefined
+    };
+
+    // const isMyObjectEmpty = Object.keys(remaining).length === 0;
+    
+    let remainingAmnt;
+    if (localStorage.getItem("remainingAmnt") === null) {
+        remainingAmnt = [];
+    } else {
+        remainingAmnt = JSON.parse(localStorage.getItem("remainingAmnt"));
+    }
+    if (remainingAmnt.length > 3) {
+        remainingAmnt.splice(0,3)
+    }
+    if (remaining.hasOwnProperty(key)) {
+        remaining[`${key}`] = Number(total);
+        remainingAmnt.push(remaining)
+        console.log(key, "pushed")
+    }
+    localStorage.setItem("remainingAmnt", JSON.stringify(remainingAmnt));
+
+}
+
+
 
 function saveLocalFoods(foodItem, carb, protein, fat) {
     let food = {
@@ -576,8 +605,6 @@ function saveTotals(totalCal, carbTotal, proteinTotal, fatTotal, goal) {
     totals.push(total);
     localStorage.setItem("totals", JSON.stringify(totals));
 }
-
-
 function removeLocalFoods(food) {
     let foods;
     if (localStorage.getItem("foods") === null) {
@@ -640,7 +667,12 @@ function getTotals() {
             macro.textContent = totals[0][`${macro.id}`];
         }
      });
-    
+    //  document.querySelectorAll('.food-item-macro-header h6').forEach(macro => {
+    //     if (totals[0].hasOwnProperty(macro.id)) {
+    //         macro.textContent = totals[0][`${macro.id}`];
+    //     }
+    //  });
+
     caloriesTotal.textContent = totals[0].weight;
     caloricCarb.textContent = totals[0].carb;
     caloricProtein.textContent = totals[0].protein;
