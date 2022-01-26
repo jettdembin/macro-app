@@ -41,7 +41,6 @@ navItems.forEach(item => {
 });
 
 
-// let [weightTotalPerDay, carbTotal, proteinTotal, fatTotal] = totalArray;
 function percentAmount(type) {
     switch (type) {
         case "cut":
@@ -50,52 +49,47 @@ function percentAmount(type) {
             percentFat.textContent = 20;
           break;
         case "maintain":
-            percentCarb.textContent = 40;
-            percentProtein.textContent = 40;
-            percentFat.textContent = 20;
+            percentCarb.textContent = 50;
+            percentProtein.textContent = 20;
+            percentFat.textContent = 30;
           break;
         case "bulk":
-            percentCarb.textContent = 40;
-            percentProtein.textContent = 40;
-            percentFat.textContent = 20;
+            percentCarb.textContent = 50;
+            percentProtein.textContent = 15;
+            percentFat.textContent = 35;
           break;
     }
 }
 
-function value(type, callback) {
-    let percentCarb;
-    let percentProtein;
-    let percentFat;
-    switch (type) {
-        case "cut":
-            percentCarb = .4;
-            percentProtein = .4;
-            percentFat = .2;
-          break;
-        case "maintain":
-            percentCarb = .5;
-            percentProtein = .2;
-            percentFat = .3;
-          break;
-        case "bulk":
-            percentCarb = .5;
-            percentProtein = .15;
-            percentFat = .35;
-          break;
-    }
-    let calcMacroTotal = function (percentage, callback) {
-        return callback(percentage);
-    }
-    calcMacroTotal()
-    caloricCarb.textContent = Math.round((weightTotalPerDay*percentCarb)/4);
-    caloricProtein.textContent = Math.round((weightTotalPerDay*percentProtein)/4);
-    caloricFat.textContent = Math.round((weightTotalPerDay*percentFat)/4);
-}
-
-// function percentValues(totalWeight, )
-// totalArray.map(total => {
-
-// })
+// function value(type, callback) {
+//     let percentCarb;
+//     let percentProtein;
+//     let percentFat;
+//     switch (type) {
+//         case "cut":
+//             percentCarb = .4;
+//             percentProtein = .4;
+//             percentFat = .2;
+//           break;
+//         case "maintain":
+//             percentCarb = .5;
+//             percentProtein = .2;
+//             percentFat = .3;
+//           break;
+//         case "bulk":
+//             percentCarb = .5;
+//             percentProtein = .15;
+//             percentFat = .35;
+//           break;
+//     }
+//     let calcMacroTotal = function (percentage, callback) {
+//         return callback(percentage);
+//     }
+//     calcMacroTotal()
+//     caloricCarb.textContent = Math.round((weightTotalPerDay*percentCarb)/4);
+//     caloricProtein.textContent = Math.round((weightTotalPerDay*percentProtein)/4);
+//     caloricFat.textContent = Math.round((weightTotalPerDay*percentFat)/4);
+// }
 
 //listen to weight input update
 weightInput.addEventListener('keypress', function(e) {
@@ -243,17 +237,20 @@ function displayHeader(goal) {
 
 //function to map macors to variables after calculation
 //function to calculate calories
-function displayCal(e) {
-    if (e.target.id === 'cut') {
+function displayCal(e, val) {
+    if (e.target.id === 'cut' || val === 'cut') {
         weightValues[0].cut.values();
         saveTotals(weightTotalPerDay, carbTotal, proteinTotal, fatTotal, "cut");
         displayHeader(e.target.id);
         //show log item total macros
         updateCalories(e);
 
-        percentCarb.textContent = 40;
-        percentProtein.textContent = 40;
-        percentFat.textContent = 20;
+        //display percents
+        percentAmount(e.target.id);
+
+        // percentCarb.textContent = 40;
+        // percentProtein.textContent = 40;
+        // percentFat.textContent = 20;
     }
     if (e.target.id === 'maintain') {
         weightValues[0].maintain.values();
@@ -262,9 +259,8 @@ function displayCal(e) {
         //show log item total macros
         updateCalories(e);
         
-        percentCarb.textContent = 50;
-        percentProtein.textContent = 20;
-        percentFat.textContent = 30;
+        //display percents
+        percentAmount(e.target.id);
     }
     if (e.target.id === 'bulk') {
         weightValues[0].bulk.values();
@@ -273,9 +269,8 @@ function displayCal(e) {
         //show log item total macros
         updateCalories(e);
 
-        percentCarb.textContent = 50;
-        percentProtein.textContent = 15;
-        percentFat.textContent = 35;
+        //display percents
+        percentAmount(e.target.id);
     }
 };
 
@@ -628,8 +623,27 @@ function getFoods() {
         foodList.appendChild(foodItem);
     });
 }
+
+function getTotals() {
+    let totals;
+    if (localStorage.getItem('totals') === null) {
+        totals = [];
+    } else {
+        totals = JSON.parse(localStorage.getItem('totals'))
+    }
+    
+    //functions to display current goal and percents
+    displayHeader(totals[0].goal);
+    percentAmount(totals[0].goal);
+    
+    caloriesTotal.textContent = totals[0].weight;
+    caloricCarb.textContent = totals[0].carb;
+    caloricProtein.textContent = totals[0].protein;
+    caloricFat.textContent = totals[0].fat;
+}
 //get foods from storage on load
 document.addEventListener("DOMContentLoaded", getFoods);
+document.addEventListener("DOMContentLoaded", getTotals);
 // console.log(JSON.parse(localStorage.getItem("foods")));
 
 
