@@ -223,8 +223,6 @@ calculate.forEach(btn => {
     });
 });
 // END EVENT LISTENERS
-
-const displayWeight = document.querySelector('.weight-input h1');
 const displayGoal = document.querySelectorAll('.goal-header-cntr h2');
 
 
@@ -635,6 +633,13 @@ function getTotals() {
     //functions to display current goal and percents
     displayHeader(totals[0].goal);
     percentAmount(totals[0].goal);
+
+    //set totals for log items section
+    document.querySelectorAll('.goal h4 span').forEach(macro => {
+        if (totals[0].hasOwnProperty(macro.id)) {
+            macro.textContent = totals[0][`${macro.id}`];
+        }
+     });
     
     caloriesTotal.textContent = totals[0].weight;
     caloricCarb.textContent = totals[0].carb;
