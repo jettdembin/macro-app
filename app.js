@@ -130,6 +130,13 @@ weightInput.addEventListener('keypress', function(e) {
                         carb();
                         protein();
                         fat();
+                        // let totals = {
+                        //     total: weightTotalPerDay,
+                        //     carb: carbTotal,
+                        //     protein: proteinTotal,
+                        //     fat: fatTotal
+                        // }
+                        // return totals
                     }
                 },
                 maintain: {
@@ -235,11 +242,11 @@ function displayHeader(goal) {
 };
 
 //function to map macors to variables after calculation
-
 //function to calculate calories
 function displayCal(e) {
     if (e.target.id === 'cut') {
         weightValues[0].cut.values();
+        saveTotals(weightTotalPerDay, carbTotal, proteinTotal, fatTotal, "cut");
         displayHeader(e.target.id);
         //show log item total macros
         updateCalories(e);
@@ -250,6 +257,7 @@ function displayCal(e) {
     }
     if (e.target.id === 'maintain') {
         weightValues[0].maintain.values();
+        saveTotals(weightTotalPerDay, carbTotal, proteinTotal, fatTotal, "maintain");
         displayHeader(e.target.id);
         //show log item total macros
         updateCalories(e);
@@ -260,6 +268,7 @@ function displayCal(e) {
     }
     if (e.target.id === 'bulk') {
         weightValues[0].bulk.values();
+        saveTotals(weightTotalPerDay, carbTotal, proteinTotal, fatTotal, "bulk");
         displayHeader(e.target.id);
         //show log item total macros
         updateCalories(e);
@@ -281,23 +290,25 @@ function adjustMeals(e) {
     } else {
         calorieHeader.textContent = "Calories Per Meal";
     }
-    if (e.target.textContent === "3") {
-        caloriesTotal.textContent = weightTotalPerDay/3;
-        caloricCarb.textContent = Math.round(carbTotal/3);
-        caloricProtein.textContent = Math.round(proteinTotal/3);
-        caloricFat.textContent = Math.round(fatTotal/3);
-    }
-    if (e.target.textContent === "4") {
-        caloriesTotal.textContent = weightTotalPerDay/4;
-        caloricCarb.textContent = Math.round(carbTotal/4);
-        caloricProtein.textContent = Math.round(proteinTotal/4);
-        caloricFat.textContent = Math.round(fatTotal/4);
-    }
-    if (e.target.textContent === "5") {
-        caloriesTotal.textContent = weightTotalPerDay/5;
-        caloricCarb.textContent = Math.round(carbTotal/5);
-        caloricProtein.textContent = Math.round(proteinTotal/5);
-        caloricFat.textContent = Math.round(fatTotal/5);
+    switch (e.target.textContent) {
+        case "3":
+            caloriesTotal.textContent = weightTotalPerDay/3;
+            caloricCarb.textContent = Math.round(carbTotal/3);
+            caloricProtein.textContent = Math.round(proteinTotal/3);
+            caloricFat.textContent = Math.round(fatTotal/3);
+            break;
+        case "4":
+            caloriesTotal.textContent = weightTotalPerDay/4;
+            caloricCarb.textContent = Math.round(carbTotal/4);
+            caloricProtein.textContent = Math.round(proteinTotal/4);
+            caloricFat.textContent = Math.round(fatTotal/4);
+            break;
+        case "5":
+            caloriesTotal.textContent = weightTotalPerDay/5;
+            caloricCarb.textContent = Math.round(carbTotal/5);
+            caloricProtein.textContent = Math.round(proteinTotal/5);
+            caloricFat.textContent = Math.round(fatTotal/5);
+            break;    
     }
 }
 //show active navigation tab
@@ -422,46 +433,38 @@ function deleteFood(e) {
     removeLocalFoods(food);
     food.remove();
 } 
-let decide = function(e, val1, val2) {
-    if (e.target.classList[0] === "item-button") {
-        deleteFood(e);
-        // console.log('reduceCal')
-        // console.log(reduceCal(val1, val2))
-        // console.log('reduceCal')
-        console.log('reduceCal')
-        console.log(val1, "val 1")
-        console.log(val2, "val 2")
-        return val1 - val2
-    } else {
-        // console.log('addBackCal')
-        // console.log(addBackCal(val1, val2))
-        val1 + val2
-        console.log(val1)
-        return val1
-    }
-}
+// let decide = function(e, val1, val2) {
+//     if (e.target.classList[0] === "item-button") {
+//         deleteFood(e);
+//         // console.log('reduceCal')
+//         // console.log(reduceCal(val1, val2))
+//         // console.log('reduceCal')
+//         console.log('reduceCal')
+//         console.log(val1, "val 1")
+//         console.log(val2, "val 2")
+//         return val1 - val2
+//     } else {
+//         // console.log('addBackCal')
+//         // console.log(addBackCal(val1, val2))
+//         val1 + val2
+//         console.log(val1)
+//         return val1
+//     }
+// }
 
-function addOrReduce(e, val1, val2, callback) {
-    if (callback) {
-        return callback(e, val1, val2);
-    } else {
-        if (e.target.classList[0] === "item-button") {
-            console.log('reduce')
-            return reduceCal(val1, val2)
-        } else {
-            console.log('add')
-            return addBackCal(val1, val2)
-        }
-    }
-}
-
-//function to recieve prevTotal 
-function prevTotal(key) {
-    document.querySelectorAll('.food-item-macro-header h6').forEach(cntr => {
-        let total = cntr.dataset[`${key}Total`]
-        return total
-    })
-}
+// function addOrReduce(e, val1, val2, callback) {
+//     if (callback) {
+//         return callback(e, val1, val2);
+//     } else {
+//         if (e.target.classList[0] === "item-button") {
+//             console.log('reduce')
+//             return reduceCal(val1, val2)
+//         } else {
+//             console.log('add')
+//             return addBackCal(val1, val2)
+//         }
+//     }
+// }
 
 //function to reduce calories
 function reduceCal(v, amnt) {  
@@ -469,18 +472,13 @@ function reduceCal(v, amnt) {
     return v
 }
 
-function addBackCal(v, amnt) {
-    v = v + amnt;
-    return v
-}
+// function addBackCal(v, amnt) {
+//     v = v + amnt;
+//     return v
+// }
 
 let macroTotals = [];
 function getCall(e, cntr) {
-    // const goals = document.querySelectorAll('.goal h4 span');
-    // goals.forEach(macro => {
-        // if (e.target.classList[0] === 'item-button') {
-        //     deleteFood(e);
-        // }
         remainingContainer = {
             carb: carbTotal,
             protein: proteinTotal,
@@ -492,22 +490,14 @@ function getCall(e, cntr) {
         for (const key in macroType) {
             if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
                 let totalNow = 0;
-                let prevTotal = 0;
-                let macroAmnt = 0;
+
                 //update value of key
                 if (e.target.classList[0] !== 'item-button') {
                     updateFood(`data-${key}`, cntr);
+                } else {
+                    deleteFood(e);
                 }
-                // } else {
-                //     let arr = [...e.target.previousElementSibling.children];
-                //     arr.forEach(child => {
-                //         if (child.dataset.hasOwnProperty(key)) {
-                //             console.log(Number(child.textContent))
-                //             updateFood(`data-${key}`, child, Number(child.textContent))
-                //             console.log(child.dataset[key] , key)
-                //         }
-                //     })
-                // }
+               
                 let total = macroType[`${key}Total`];
                 
                 //if first food item added
@@ -521,7 +511,8 @@ function getCall(e, cntr) {
                     console.log('second');
                     let prevTotalArr =  document.querySelectorAll('.food-item-macro-header h6');
                     
-                    let returnNum = (e, key) => {
+                    //function to return user target deletion nu,
+                    let returnTargetNum = (e, key) => {
                         let arr = [...e.target.previousElementSibling.children];
                         let num;
                         arr.forEach(child => {
@@ -533,25 +524,11 @@ function getCall(e, cntr) {
                         return num
                     }
 
-
-                    totalNow = Number(`${e.target.classList[0] ==='item-button' ? Number(total) - returnNum(e, key) : Number(total) + Number(macroType[key])}`);
+                    //REFACTOR
+                    totalNow = Number(`${e.target.classList[0] ==='item-button' ? Number(total) - returnTargetNum(e, key) : Number(total) + Number(macroType[key])}`);
                     updateFood(`data-${key}-total`, cntr, totalNow);
 
-                    prevTotal = Number(total) + Number(macroType[key]);
-                    let macroTotalVal = [key, prevTotal];
-                    if (macroTotals.length < 6) {
-                        macroTotals.push(macroTotalVal)
-                    } else {
-                        macroTotals.splice(0,6)
-                        macroTotals.push(macroTotalVal)
-                    }
-                    console.log(macroTotals);
-
                     updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - totalNow}`);
-                    // updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, totalNow , macroAmnt, decide))}`);
-                    // updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (addOrReduce(e, Number(total), Number(macroType[key])))}`); // works for setting remaining on addition of items
-                    // console.log(addOrReduce(e, Number(total), Number(macroType[key])));
-                    // console.log(addOrReduce(e, (Number(total) + Number(macroType[key])), Number(macroType[key]))); //total for next iteration on new tem submission (this works for deleting items and having the total fixed)
                     console.log(cntr.dataset);
                     console.log(typeof(remainingContainer[key] - totalNow))
 
@@ -566,55 +543,7 @@ function getCall(e, cntr) {
                 }
             }
         }
-    // });
 }
-// function getMacros(cntr) {
-//     let calc = function(num1, num2,callback) {
-//         return callback(num1, num2);
-//     }
-//     // let calc = function(num1, num2, callback) {
-//     //     return callback(num1, num2)
-//     // }
-//     remainingContainer = {
-//         carb: carbTotal,
-//         protein: proteinTotal,
-//         fat: fatTotal,
-//         total: 1
-//     };
-
-//     let macroType = cntr.dataset;
-//     for (const key in macroType) {
-//         if (macroType.hasOwnProperty(key) && remainingContainer[key]) {
-//             console.log(cntr)
-//             console.log(remainingContainer)
-//             //update value of key
-//             updateFood(`data-${key}`, cntr);
-//             let total = macroType[`${key}Total`];
-            
-//             //if first food item added
-//             if (total === undefined) {
-//                 updateFood(`data-${key}-total`, cntr, `${macroType[key]}`);
-//                 updateFood(`data-${key}-remaining`, cntr, `${
-//                     calc(remainingContainer[key], macroType[key], reduceCal)
-//                 }`);
-//                 // updateFood(`data-${key}-remaining`, cntr, `${calc(reduceCal(remainingContainer[key], macroType[key]))}`);
-//                 // cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
-//                 cntr.textContent = `${reduceCal(remainingContainer[key], macroType[key])}`;
-//             } else {
-
-//                 updateFood(`data-${key}-total`, cntr, `${Number(macroType[key]) + Number(total) }`);
-//                 updateFood(`data-${key}-remaining`, cntr, `${remainingContainer[key] - (Number(total) + Number(macroType[key]))}`);
-//                 //header content
-//                 cntr.textContent = `${reduceCal(remainingContainer[key], (Number(total) + Number(macroType[key])))}`;
-//             }
-
-//             //display total
-//             if (macroType['total']) {
-//                 cntr.textContent = `${remainingContainer[cntr.id]}`;
-//             }
-//         }
-//     }
-// }
 
 //functions to save, remove and get items
 
@@ -633,6 +562,26 @@ function saveLocalFoods(foodItem, carb, protein, fat) {
     }
     foods.push(food);
     localStorage.setItem("foods", JSON.stringify(foods));
+}
+
+function saveTotals(totalCal, carbTotal, proteinTotal, fatTotal, goal) {
+    let total = {
+        weight: totalCal,
+        carb: carbTotal,
+        protein: proteinTotal,
+        fat: fatTotal,
+        goal: goal
+    };
+    let totals;
+    if (localStorage.getItem("totals") === null) {
+        totals = [];
+    } else {
+        totals = JSON.parse(localStorage.getItem("totals"));
+    }
+    //remove prior totals
+    totals.pop();
+    totals.push(total);
+    localStorage.setItem("totals", JSON.stringify(totals));
 }
 
 
@@ -677,7 +626,6 @@ function getFoods() {
         </button>
         `;
         foodList.appendChild(foodItem);
-        // updateCalories();
     });
 }
 //get foods from storage on load
